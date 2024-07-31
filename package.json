@@ -1,0 +1,15 @@
+{
+	"name": "fullstackopen",
+	"private": true,
+	"version": "1.0.0",
+	"description": "curso Full Stack Open",
+	"keywords": [],
+	"author": "mellambias",
+	"license": "ISC",
+	"workspaces": ["exercises/*"],
+	"scripts": {
+		"build": "pnpm -r run build",
+		"dev": "pnpm -r run dev",
+		"test": "pnpm -r run test"
+	}
+}
