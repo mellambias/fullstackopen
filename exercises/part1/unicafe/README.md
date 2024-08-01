@@ -47,7 +47,7 @@ export default App
 
 Amplía tu aplicación para que muestre más estadísticas sobre los comentarios recopilados: el número total de comentarios recopilados, la puntuación promedio (buena: 1, neutral: 0, mala: -1) y el porcentaje de comentarios positivos.
 
-![Captura de pantalla del promedio y el porcentaje de comentarios positivos](image-1.png)
+![Captura de pantalla del promedio y el porcentaje de comentarios positivos](./images/image-1.png)
 
 ## 1.8: unicafe, paso 3
 
@@ -81,7 +81,7 @@ const App = () => {
 
 Cambia tu aplicación para mostrar estadísticas solo una vez que se hayan recopilado los comentarios.
 
-![Captura de pantalla con texto que indica que no se han dejado comentarios](image-2.png)
+![Captura de pantalla con texto que indica que no se han dejado comentarios](./images/image-2.png)
 
 ## 1.10: unicafe paso 5
 
