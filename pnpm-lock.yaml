@@ -73,6 +73,23 @@ importers:
       '@vitejs/plugin-react-swc': 3.5.0_vite@5.3.4
       vite: 5.3.4
 
+  exercises/part2/phonebook:
+    specifiers:
+      '@types/react': 18.3.3
+      '@types/react-dom': 18.3.0
+      '@vitejs/plugin-react-swc': 3.5.0
+      react: 18.3.1
+      react-dom: 18.3.1
+      vite: 5.3.4
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1_react@18.3.1
+    devDependencies:
+      '@types/react': 18.3.3
+      '@types/react-dom': 18.3.0
+      '@vitejs/plugin-react-swc': 3.5.0_vite@5.3.4
+      vite: 5.3.4
+
   temas/p2/part2-notes-frontend:
     specifiers:
       '@types/react': 18.2.15
