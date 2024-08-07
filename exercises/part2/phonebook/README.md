@@ -154,3 +154,52 @@ const App = () => {
 ```
 
 >NB: Es posible que tengas problemas en este ejercicio si defines tus componentes "en el lugar equivocado". Ahora sería un buen momento para recordar el capítulo no definir componentes dentro de los componentes de la última parte.
+
+## 2.11: La Agenda Telefónica Paso 6
+
+Continuamos con el desarrollo de la agenda telefónica. Almacena el estado inicial de la aplicación en el archivo **db.json**, que debe ubicarse en la raíz del proyecto.
+
+```json
+{
+  "persons":[
+    {
+      "name": "Arto Hellas",
+      "number": "040-123456",
+      "id": 1
+    },
+    {
+      "name": "Ada Lovelace",
+      "number": "39-44-5323523",
+      "id": 2
+    },
+    {
+      "name": "Dan Abramov",
+      "number": "12-43-234345",
+      "id": 3
+    },
+    {
+      "name": "Mary Poppendieck",
+      "number": "39-23-6423122",
+      "id": 4
+    }
+  ]
+}
+```
+
+Inicia **json-server** en el puerto **3001** y asegúrate de que el servidor devuelve la lista de personas yendo a la dirección <http://localhost:3001/persons> en el navegador.
+
+Si recibes el siguiente mensaje de error:
+
+```shell
+events.js:182
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE 0.0.0.0:3001
+    at Object._errnoException (util.js:1019:11)
+    at_exceptionWithHostPort (util.js:1041:20)copy
+```
+
+significa que el puerto 3001 ya está en uso por otra aplicación, por ejemplo en uso por un servidor json que ya se está ejecutando. Cierra la otra aplicación o cambia el puerto en caso de que no funcione.
+
+Modifica la aplicación de modo que el estado inicial de los datos se obtenga del servidor mediante la librería **axios**. Completa la obtención de los datos con un **Effect hook**.

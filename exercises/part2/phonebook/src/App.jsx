@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Filter } from './components/Filter'
 import { PersonForm } from './components/PersonForm'
 import { Persons } from './components/Persons'
+import axios from 'axios'
 
 const mockPhonebook = [
   { name: 'Arto Hellas', number: '040-123456' },
@@ -10,11 +11,28 @@ const mockPhonebook = [
   { name: 'Mary Poppendieck', number: '39-23-6423122' }
 ]
 
+const SERVER = {
+  HOST: 'localhost',
+  PORT: 3002
+}
+
+const ENDPOINTS = {
+  persons: `http://${SERVER.HOST}:${SERVER.PORT}/persons`
+}
+
 const App = () => {
-  const [persons, setPersons] = useState(mockPhonebook)
+  const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setfilter] = useState('')
+
+  useEffect(() => {
+    axios
+      .get(ENDPOINTS.persons)
+      .then(response => {
+        setPersons(response.data)
+      })
+  }, [])
 
   const addName = (event) => {
     event.preventDefault()
