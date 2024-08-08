@@ -241,3 +241,18 @@ Cambia la funcionalidad para que _si se agrega un número a un usuario que ya ex
 
 Si la información de la persona ya está en la agenda telefónica, la aplicación puede pedirle al usuario que confirme la acción:
 ![2.18 captura de pantalla de la confirmación de alerta](img/image-5.png)
+
+## 2.16: Agenda Telefónica paso 11
+
+Usa el ejemplo de mensaje de error mejorado de la parte 2 como guía para mostrar una notificación que dure unos segundos después de que se ejecute una operación exitosa (se agrega una persona o se cambia un número):
+![captura de pantalla de éxito verde agregada](img/image-6.png)
+
+## 2.17*: Agenda Telefónica paso 12
+
+Abre tu aplicación en dos navegadores. Si eliminas a una persona en el navegador 1 poco antes de intentar cambiar el número de teléfono de la persona en el navegador 2, obtendrás los siguientes mensajes de error:
+![mensaje de error 404 no encontrado al cambiar en varios navegadores](img/image-7.png)
+
+Soluciona el problema según el ejemplo mostrado en promesas y errores en la parte 2. Modifica el ejemplo para que se muestre un mensaje cuando la operación no tiene éxito. Los mensajes mostrados para eventos exitosos y no exitosos deben lucir diferentes:
+![mensaje de error mostrado en pantalla en lugar de en la consola característica adicional](img/image-8.png)
+
+>Nota que incluso si manejas la excepción, el primer mensaje de error "404" todavía se imprime en la consola. Pero no deberías ver "Uncaught (in promise) Error".
