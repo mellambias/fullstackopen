@@ -3,7 +3,7 @@ import notes from "./services/notes";
 const config = {
 	jsonServer: {
 		host: "http://localhost",
-		port: 3002,
+		port: 3003,
 	},
 	endPoints: {
 		notes: "/notes",

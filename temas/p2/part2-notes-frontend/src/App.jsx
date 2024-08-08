@@ -7,7 +7,7 @@ import { Footer } from './components/Footer';
 
 
 const App = () => {
-  const [notes, setNotes] = useState([])
+  const [notes, setNotes] = useState(null)
   const [newNote, setNewNote] = useState("")
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
@@ -61,8 +61,14 @@ const App = () => {
       })
   }
 
-  const notesToShow = showAll ? notes : notes.filter(note => note.important)
 
+  if (!notes) {
+    return (
+      <div>loading...</div>
+    )
+  }
+
+  const notesToShow = showAll ? notes : notes.filter(note => note.important)
   return (
     <div>
       <h1>Notes</h1>
