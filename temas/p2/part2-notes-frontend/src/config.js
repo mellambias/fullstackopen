@@ -7,7 +7,8 @@ const config = {
 		notes: "/api/notes",
 	},
 	getEndPoint: function (endpoint) {
-		return `${this.jsonServer.host}:${this.jsonServer.port}${this.endPoints[endpoint]}`;
+		//return `${this.jsonServer.host}:${this.jsonServer.port}${this.endPoints[endpoint]}`;
+		return `${this.endPoints[endpoint]}`;
 	},
 };
 
