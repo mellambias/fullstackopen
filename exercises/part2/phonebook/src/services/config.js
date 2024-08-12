@@ -1,10 +1,10 @@
 const config = {
 	jsonServer: {
 		host: "http://localhost",
-		port: 3002,
+		port: 3001,
 	},
 	endPoints: {
-		persons: "/persons",
+		persons: "/api/persons",
 	},
 	getEndPoint: function (endpoint) {
 		return `${this.jsonServer.host}:${this.jsonServer.port}${this.endPoints[endpoint]}`;
