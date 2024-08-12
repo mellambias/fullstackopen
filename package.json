@@ -6,7 +6,6 @@
 	"keywords": [],
 	"author": "mellambias",
 	"license": "ISC",
-	"workspaces": ["exercises/**", "temas/**"],
 	"scripts": {
 		"build": "pnpm -r run build",
 		"dev": "pnpm -r run dev",
