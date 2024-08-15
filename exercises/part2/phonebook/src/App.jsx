@@ -42,11 +42,15 @@ const App = () => {
         name: newName,
         number: newNumber
       };
-      personServices.create(personObject)
+      personServices
+        .create(personObject)
         .then((personCreated) => {
-          setPersons(persons.concat(personCreated));
-          setMessage({ text: `Added ${personCreated.name}`, type: "success" });
+          setPersons(persons.concat(personCreated.data));
+          setMessage({ text: `Added ${personCreated.data.name}`, type: "success" });
 
+        })
+        .catch((error) => {
+          setMessage({ text: `${error.response.data.error}`, type: "error" });
         });
     }
     setNewName("");
