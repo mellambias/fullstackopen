@@ -45,12 +45,11 @@ const App = () => {
       personServices
         .create(personObject)
         .then((personCreated) => {
-          setPersons(persons.concat(personCreated.data));
-          setMessage({ text: `Added ${personCreated.data.name}`, type: "success" });
-
+          setPersons(persons.concat(personCreated));
+          setMessage({ text: `Added ${personCreated.name}`, type: "success" });
         })
         .catch((error) => {
-          setMessage({ text: `${error.response.data.error}`, type: "error" });
+          setMessage({ text: `${JSON.parse(error.request.response).error}`, type: "error" });
         });
     }
     setNewName("");
@@ -93,7 +92,7 @@ const App = () => {
   return (
     <div>
       <Notification message={message} />
-      <h2>Phonebook</h2>
+      <h2>Phonebook v2.1</h2>
       <Filter value={filter} onChange={handleFilter} />
       <h3>Add a new</h3>
       <PersonForm
