@@ -1,6 +1,8 @@
 # Backend
 
-## A Node.js y Express
+## Parte 3
+
+### A Node.js y Express
 
 [Servidor simple](https://fullstackopen.com/es/part3/node_js_y_express)
 
@@ -19,7 +21,7 @@
 - Middleware
 - Ejercicios 3.7.-3.8.
 
-## B Despliegue de la aplicación a internet
+### B Despliegue de la aplicación a internet
 
 [Despliegue de la aplicación](https://fullstackopen.com/es/part3/despliegue_de_la_aplicacion_a_internet)
 
@@ -32,7 +34,7 @@
 - Proxy
 - Ejercicios 3.9.-3.11.
 
-## C Guardado de datos en MongoDB
+### C Guardado de datos en MongoDB
 
 [Guardado de datos en MongoDB](https://fullstackopen.com/es/part3/guardando_datos_en_mongo_db)
 
@@ -55,7 +57,7 @@
 - Un verdadero juramento de desarrollador full stack
 - Ejercicios 3.15.-3.18.
 
-## D Validación y ESLint
+### D Validación y ESLint
 
 [Validación y ESLint](https://fullstackopen.com/es/part3/validacion_y_es_lint)
 
@@ -63,3 +65,13 @@
 - Ejercicios 3.19.-3.21.
 - Lint
 - Ejercicio 3.22.
+
+## Parte 4
+
+### a Estructura de la aplicación backend, introducción a las pruebas
+
+- Estructura del proyecto
+- Nota sobre las exportaciones
+- Ejercicios 4.1.-4.2.
+- Testing de aplicaciones Node
+- Ejercicios 4.3.-4.7.
