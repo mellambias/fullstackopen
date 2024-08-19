@@ -7,11 +7,11 @@
 	"scripts": {
 		"start": "node index.js",
 		"dev": "nodemon index.js",
-		"build:ui": "rm -rf dist && cd ../../p2/part2-notes-frontend && pnpm run build && cp -r dist ../../p3/01_servidorSimple",
+		"build:ui": "rm -rf dist && pnpm --prefix ../../p2/part2-notes-frontend run build && cp -r dist ../../p3",
 		"build:server": "git add . && git commit -m serverbuild && git push && pnpm run git:tree",
 		"deploy:full": "pnpm run build:ui && pnpm run build:server",
 		"debug": "nodemon --inspect index.js",
-		"git:tree": "pnpm --prefix ../../.. run git:tree"
+		"git:tree": "pnpm --prefix ../../ run git:tree"
 	},
 	"keywords": ["node"],
 	"author": "Miguel E. Llambias Llansó",
