@@ -1,0 +1,23 @@
+# Añade un blog
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title":"Mientras el virus se propagaba",
+  "author":"Luis del Pino",
+  "url":"https://www.libertaddigital.com/opinion/los-enigmas-del-11m/mientras-el-virus-se-propagaba-18552/",
+  "likes":0
+}
+
+###
+
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title":"'The Last Ship', lo próximo de Michael Bay",
+  "author":"Juan Manuel González",
+  "url":"https://www.libertaddigital.com/cultura/series/seriemente/the-last-ship-lo-proximo-de-michael-bay/",
+  "likes":0
+}

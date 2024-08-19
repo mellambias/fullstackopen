@@ -195,6 +195,28 @@ importers:
         specifier: 3.1.4
         version: 3.1.4
 
+  exercises/part4:
+    dependencies:
+      cors:
+        specifier: 2.8.5
+        version: 2.8.5
+      dotenv:
+        specifier: 16.4.5
+        version: 16.4.5
+      express:
+        specifier: 4.19.2
+        version: 4.19.2
+      mongoose:
+        specifier: 8.5.2
+        version: 8.5.2
+    devDependencies:
+      '@biomejs/biome':
+        specifier: 1.8.3
+        version: 1.8.3
+      nodemon:
+        specifier: 3.1.4
+        version: 3.1.4
+
   temas/p2/part2-notes-frontend:
     dependencies:
       axios:
@@ -222,6 +244,25 @@ importers:
       vite:
         specifier: 4.4.5
         version: 4.4.5
+
+  temas/p3:
+    dependencies:
+      cors:
+        specifier: 2.8.5
+        version: 2.8.5
+      dotenv:
+        specifier: 16.4.5
+        version: 16.4.5
+      express:
+        specifier: 4.19.2
+        version: 4.19.2
+      mongoose:
+        specifier: 8.5.2
+        version: 8.5.2
+    devDependencies:
+      nodemon:
+        specifier: 3.1.4
+        version: 3.1.4
 
   temas/p3/01_servidorSimple:
     dependencies:
