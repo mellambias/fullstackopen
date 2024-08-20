@@ -68,10 +68,27 @@
 
 ## Parte 4
 
-### a Estructura de la aplicación backend, introducción a las pruebas
+### [Estructura de la aplicación backend, introducción a las pruebas](https://fullstackopen.com/es/part4/estructura_de_la_aplicacion_backend_introduccion_a_las_pruebas)
 
 - Estructura del proyecto
 - Nota sobre las exportaciones
 - Ejercicios 4.1.-4.2.
 - Testing de aplicaciones Node
 - Ejercicios 4.3.-4.7.
+
+### [Probando el backend](https://fullstackopen.com/es/part4/probando_el_backend)
+
+- Entorno de prueba - Pruebas de integración
+- [supertest](https://github.com/visionmedia/supertest)
+- Inicializando la base de datos antes de las pruebas
+- Ejecución de pruebas una por una
+- async/await
+- async/await en el backend
+- Más pruebas y refactorización del backend
+- Manejo de errores y async/await
+- Eliminando el try-catch
+- Optimización de la función beforeEach
+- El juramento de un verdadero desarrollador full stack
+- Ejercicios 4.8.-4.12.
+- Refactorizando pruebas
+- Ejercicios 4.13.-4.14

@@ -1,14 +1,12 @@
 const mongoose = require("mongoose");
+const config = require("./utils/config");
 
-if (process.argv.length < 3) {
-	console.log("give password as argument");
+if (process.argv.length < 2) {
+	console.log("Hacen falta argumentos");
 	process.exit(1);
 }
 
-const password = process.argv[2];
-console.log(password);
-
-const url = `mongodb+srv://service:${password}@fullstackopen.zbjmh.mongodb.net/?retryWrites=true&w=majority&appName=fullstackopen`;
+const url = config.getMongoURI();
 
 mongoose.set("strictQuery", false);
 mongoose.connect(url);

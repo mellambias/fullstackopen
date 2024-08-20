@@ -5,25 +5,27 @@
 	"description": "Servidor simple",
 	"main": "index.js",
 	"scripts": {
-		"start": "node index.js",
-		"dev": "nodemon index.js",
+		"start": "cross-env NODE_ENV=production node index.js",
+		"dev": "cross-env NODE_ENV=devolopment nodemon index.js",
+		"test": "cross-env NODE_ENV=test node --test",
+		"debug": "cross-env NODE_ENV=debugging nodemon --inspect index.js",
 		"build:ui": "rm -rf dist && pnpm --prefix ../../p2/part2-notes-frontend run build && cp -r dist ../../p3",
 		"build:server": "git add . && git commit -m serverbuild && git push && pnpm run git:tree",
 		"deploy:full": "pnpm run build:ui && pnpm run build:server",
-		"debug": "nodemon --inspect index.js",
-		"git:tree": "pnpm --prefix ../../ run git:tree",
-		"test": "node --test"
+		"git:tree": "pnpm --prefix ../../ run git:tree"
 	},
 	"keywords": ["node"],
 	"author": "Miguel E. Llambias Llansó",
 	"license": "ISC",
 	"dependencies": {
 		"cors": "2.8.5",
+		"cross-env": "7.0.3",
 		"dotenv": "16.4.5",
 		"express": "4.19.2",
 		"mongoose": "8.5.2"
 	},
 	"devDependencies": {
-		"nodemon": "3.1.4"
+		"nodemon": "3.1.4",
+		"supertest": "7.0.0"
 	}
 }
