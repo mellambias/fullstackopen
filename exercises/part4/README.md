@@ -74,3 +74,125 @@ El "atajo" terminará tomando más tiempo que avanzar lenta y sistemáticamente.
 Una de las mejores prácticas es hacer un _commit de tu código cada vez que está en un estado estable_. Esto facilita retroceder a una situación donde la aplicación aún funciona.
 
 Si estás teniendo problemas con **content.body** siendo `undefined` sin razón aparente, asegúrate de no haber olvidado agregar `app.use(express.json())` cerca de la parte superior del archivo.
+
+## Ejercicios 4.3 - 4.7
+
+Creemos una colección de funciones auxiliares que estén destinadas a trabajar con las secciones describe de la lista de blogs.
+
+- Crea las funciones en un archivo llamado `utils/list_helper.js`.
+- Escribe tus pruebas en un archivo de prueba con el nombre apropiado en el directorio tests.
+
+### 4.3: Funciones Auxiliares y Pruebas Unitarias, paso 1
+
+Primero define una función **dummy** que reciba un array de publicaciones de blog como parámetro y siempre devuelva el valor 1.
+
+El contenido del archivo `list_helper.js` en este punto debe ser el siguiente:
+
+```js
+const dummy = (blogs) => {
+  // ...
+}
+
+module.exports = {
+  dummy
+}
+```
+
+Verifica que tu configuración de prueba funcione con la siguiente prueba:
+
+```js
+const { test, describe } = require('node:test')
+const assert = require('node:assert')
+const listHelper = require('../utils/list_helper')
+
+test('dummy returns one', () => {
+  const blogs = []
+
+  const result = listHelper.dummy(blogs)
+  assert.strictEqual(result, 1)
+})
+```
+
+### 4.4: Funciones Auxiliares y Pruebas Unitarias, paso 2
+
+Define una nueva función **totalLikes** que recibe una lista de publicaciones de blogs como parámetro.
+
+La función devuelve _la suma total de likes en todas las publicaciones del blog_.
+
+Escribe pruebas apropiadas para la función. Se recomienda poner las pruebas dentro de un bloque _describe_, para que la salida del informe de prueba se agrupe bien:
+
+![npm test pasando para list_helper_test](img/image-1.png)
+
+Definir datos de prueba para la función se puede hacer así:
+
+```js
+describe('total likes', () => {
+  const listWithOneBlog = [
+    {
+      _id: '5a422aa71b54a676234d17f8',
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+      likes: 5,
+      __v: 0
+    }
+  ]
+
+  test('when list has only one blog, equals the likes of that', () => {
+    const result = listHelper.totalLikes(listWithOneBlog)
+    assert.strictEqual(result, 5)
+  })
+})
+```
+
+Si definir tu propia lista de datos de prueba de blogs es demasiado trabajo, puedes usar la lista ya hecha [aquí](https://github.com/fullstack-hy2020/misc/blob/master/blogs_for_test.md).
+
+Es probable que tengas problemas al escribir pruebas. Recuerda las cosas que aprendimos sobre depuración en la parte 3. Puedes imprimir cosas en la consola con `console.log` incluso durante la ejecución de la prueba.
+
+### 4.5*: Funciones Auxiliares y Pruebas Unitarias, paso 3
+
+Define una nueva función **favoriteBlog** que recibe una _lista de blogs_ como parámetro. La función descubre qué blog tiene más me gusta. Si hay muchos favoritos, basta con devolver uno de ellos.
+
+El valor devuelto por la función podría tener el siguiente formato:
+
+```js
+{
+  title: "Canonical string reduction",
+  author: "Edsger W. Dijkstra",
+  likes: 12
+}
+```
+
+>NB cuando estás comparando objetos, el método [**`deepStrictEqual`**](https://nodejs.org/api/assert.html#assertdeepstrictequalactual-expected-message) es probablemente lo que debas usar, [`strictEqual`](https://nodejs.org/api/assert.html#assertstrictequalactual-expected-message) intenta verificar que los dos valores sean el mismo valor, y no solo que contengan las mismas propiedades. Para conocer las diferencias entre las distintas funciones del módulo _`assert`_, puedes consultar esta [respuesta Stack Overflow](https://stackoverflow.com/a/73937068/15291501).
+
+Escribe las pruebas para este ejercicio dentro de un nuevo bloque _describe_. Haz lo mismo con los ejercicios restantes también.
+
+### 4.6*: Funciones Auxiliares y Pruebas Unitarias, paso 4
+
+Este y el siguiente ejercicio son un poco más desafiantes. No es necesario completar estos dos ejercicios para avanzar en el material del curso, por lo que puede ser una buena idea volver a estos una vez que haya terminado de leer el material de esta parte en su totalidad.
+
+Se puede terminar este ejercicio sin el uso de librerías adicionales. Sin embargo, este ejercicio es una gran oportunidad para aprender a usar la librería **Lodash**.
+
+Define una función llamada **mostBlogs** que reciba una lista de blogs como parámetro. La función devuelve el `author` que tiene la mayor cantidad de blogs. El valor de retorno también contiene el `número de blogs` que tiene el autor principal:
+
+```js
+{
+  author: "Robert C. Martin",
+  blogs: 3
+}
+```
+
+Si hay muchos blogueros importantes, entonces es suficiente con devolver uno de ellos.
+
+### 4.7*: Funciones Auxiliares y Pruebas Unitarias, paso 5
+
+Define una función llamada **mostLikes** que reciba una _lista de blogs_ como parámetro. La función devuelve el `autor`, cuyas publicaciones de blog tienen la mayor cantidad de me gusta. El valor de retorno también contiene el `número total de likes` que el autor ha recibido:
+
+```js
+{
+  author: "Edsger W. Dijkstra",
+  likes: 17
+}
+```
+
+Si hay muchos bloggers importantes, entonces es suficiente para mostrar cualquiera de ellos.

@@ -11,7 +11,8 @@
 		"build:server": "git add . && git commit -m serverbuild && git push && pnpm run git:tree",
 		"deploy:full": "pnpm run build:ui && pnpm run build:server",
 		"debug": "nodemon --inspect index.js",
-		"git:tree": "pnpm --prefix ../../ run git:tree"
+		"git:tree": "pnpm --prefix ../../ run git:tree",
+		"test": "node --test"
 	},
 	"keywords": ["node"],
 	"author": "Miguel E. Llambias Llansó",
