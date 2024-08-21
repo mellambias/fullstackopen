@@ -14,11 +14,18 @@ const noteSchema = new mongoose.Schema({
 });
 
 // configuramos el formato de respuesta JSON para que incluya el id de la nota y no el _id de mongoDB
+// https://mongoosejs.com/docs/api/document.html#transform
 noteSchema.set("toJSON", {
-	transform: (document, returnedObject) => {
-		returnedObject.id = returnedObject._id;
-		returnedObject._id = undefined;
-		returnedObject.__v = undefined;
+	transform: (document, ret, options) => {
+		const newDocument = {
+			id: document._id.toString(),
+		};
+		for (const key in ret) {
+			if (key !== "_id" && key !== "__v") {
+				newDocument[key] = ret[key];
+			}
+		}
+		return newDocument;
 	},
 });
 

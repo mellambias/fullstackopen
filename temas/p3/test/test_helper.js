@@ -21,7 +21,10 @@ async function nonExistingId() {
 
 async function notesInDb() {
 	const notes = await Note.find({});
-	return notes.map((note) => note.toJSON());
+	const notesToJson = notes.map((note) => {
+		return note.toJSON();
+	});
+	return notesToJson;
 }
 
 module.exports = {

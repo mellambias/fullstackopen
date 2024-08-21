@@ -29,8 +29,8 @@ notesRouter.delete("/:id", async (req, res, next) => {
 });
 
 notesRouter.put("/:id", async (req, res, next) => {
+	const { important } = req.body;
 	try {
-		const { important } = req.body;
 		const updatedNote = await Note.findByIdAndUpdate(
 			req.params.id,
 			{ important },
@@ -43,16 +43,16 @@ notesRouter.put("/:id", async (req, res, next) => {
 });
 
 notesRouter.post("/", async (req, res, next) => {
+	const note = req.body;
+
+	const newNote = new Note({
+		content: note.content,
+		important:
+			typeof note.important !== "undefined" ? Boolean(note.important) : false,
+		date: new Date().toISOString(),
+	});
+
 	try {
-		const note = req.body;
-
-		const newNote = new Note({
-			content: note.content,
-			important:
-				typeof note.important !== "undefined" ? Boolean(note.important) : false,
-			date: new Date().toISOString(),
-		});
-
 		const savedNote = await newNote.save();
 		res.status(201).json(savedNote);
 	} catch (error) {
