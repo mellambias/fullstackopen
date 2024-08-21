@@ -18,7 +18,7 @@ const errorHandler = (err, req, res, next) => {
 
 	switch (err.name) {
 		case "CastError":
-			return res.status(400).send({ error: err.message });
+			return res.status(404).send({ error: err.message });
 		case "ValidationError":
 			return res.status(400).json({ error: err.message });
 		default:

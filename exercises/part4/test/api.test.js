@@ -85,6 +85,49 @@ describe("Blog API tests", () => {
 		await api.post("/api/blogs").send(blogWithoutUrl).expect(400);
 	});
 
+	describe("Borrar publicación", () => {
+		test("Borrar una publicación existente", async () => {
+			const allBlogs = await api.get("/api/blogs");
+			const blogToDelete = allBlogs.body[0];
+
+			await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+			const allBlogsAfterDelete = await api.get("/api/blogs");
+			assert.strictEqual(allBlogsAfterDelete.body.length, mockBlogs.length - 1);
+		});
+
+		test("Borrar una publicación no existente", async () => {
+			const nonExistentId = "1111";
+			await api.delete(`/api/blogs/${nonExistentId}`).expect(404);
+		});
+	});
+
+	describe("Actualizar publicación", () => {
+		test("Actualizar una publicación existente", async () => {
+			const allBlogs = await api.get("/api/blogs");
+			const blogToUpdate = allBlogs.body[0];
+			const updatedLikes = blogToUpdate.likes + 1;
+
+			const result = await api
+				.put(`/api/blogs/${blogToUpdate.id}`)
+				.send({ likes: updatedLikes })
+				.expect(200)
+				.expect("Content-Type", /application\/json/);
+
+			assert.strictEqual(result.body.likes, updatedLikes);
+		});
+
+		test("Actualizar una publicación no existente", async () => {
+			const nonExistentId = "XXXX";
+			const updatedLikes = 10;
+
+			await api
+				.put(`/api/blogs/${nonExistentId}`)
+				.send({ likes: updatedLikes })
+				.expect(404);
+		});
+	});
+
 	after(async () => {
 		await mongoose.connection.close();
 	});

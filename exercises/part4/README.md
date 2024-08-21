@@ -241,3 +241,23 @@ Realiza los cambios necesarios en el código para que pase la prueba.
 Escribe una prueba relacionada con la creación de blogs nuevos a través del endpoint `/api/blogs`, que verifique que si faltan las propiedades `title` o `url` de los datos solicitados, el backend responde a la solicitud con el código de estado `400 Bad Request`.
 
 Realiza los cambios necesarios en el código para que pase la prueba.
+
+## Ejercicios 4.13.-4.14
+
+## 4.13 Expansiones de la Lista de Blogs, paso 1
+
+Implementa la funcionalidad para **eliminar un solo recurso** de publicación de blog.
+
+Utiliza la sintaxis `async/await`. Sigue las convenciones de _RESTful_ al definir la API HTTP.
+
+Implementa pruebas para esta funcionalidad.
+
+## 4.14 Expansiones de Listas de Blogs, paso 2
+
+Implementa la funcionalidad para **actualizar la información** de una publicación de blog individual.
+
+Utiliza `async/await`.
+
+La aplicación principalmente necesita _actualizar la cantidad de likes_ para una publicación de blog. Puedes implementar esta funcionalidad de la misma manera que implementamos actualizar notas en la parte 3.
+
+Implementa pruebas para esta funcionalidad.
