@@ -7,39 +7,27 @@ notesRouter.get("/", async (req, res) => {
 });
 
 notesRouter.get("/:id", async (req, res, next) => {
-	try {
-		const note = await Note.findById(req.params.id);
-		if (note) {
-			res.json(note);
-		} else {
-			res.status(404).end();
-		}
-	} catch (err) {
-		next(err);
+	const note = await Note.findById(req.params.id);
+	if (note) {
+		res.json(note);
+	} else {
+		res.status(404).end();
 	}
 });
 
 notesRouter.delete("/:id", async (req, res, next) => {
-	try {
-		await Note.findByIdAndDelete(req.params.id);
-		res.status(204).end();
-	} catch (error) {
-		next(error);
-	}
+	await Note.findByIdAndDelete(req.params.id);
+	res.status(204).end();
 });
 
 notesRouter.put("/:id", async (req, res, next) => {
 	const { important } = req.body;
-	try {
-		const updatedNote = await Note.findByIdAndUpdate(
-			req.params.id,
-			{ important },
-			{ new: true, runValidators: true },
-		);
-		res.json(updatedNote);
-	} catch (error) {
-		next(error);
-	}
+	const updatedNote = await Note.findByIdAndUpdate(
+		req.params.id,
+		{ important },
+		{ new: true, runValidators: true },
+	);
+	res.json(updatedNote);
 });
 
 notesRouter.post("/", async (req, res, next) => {
@@ -51,13 +39,8 @@ notesRouter.post("/", async (req, res, next) => {
 			typeof note.important !== "undefined" ? Boolean(note.important) : false,
 		date: new Date().toISOString(),
 	});
-
-	try {
-		const savedNote = await newNote.save();
-		res.status(201).json(savedNote);
-	} catch (error) {
-		next(error);
-	}
+	const savedNote = await newNote.save();
+	res.status(201).json(savedNote);
 });
 
 module.exports = notesRouter;

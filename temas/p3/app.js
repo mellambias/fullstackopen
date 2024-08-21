@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+require("express-async-errors");
 const app = express();
 const serverConfig = require("./utils/config");
 const logger = require("./utils/logger");

@@ -87,6 +87,8 @@
 - Más pruebas y refactorización del backend
 - Manejo de errores y async/await
 - Eliminando el try-catch
+  - libreria [express-async-errors](https://github.com/davidbanham/express-async-errors)
+  Permite eliminar el try/catch enviando todas las excepciones al middleware de que maneja los errores
 - Optimización de la función beforeEach
 - El juramento de un verdadero desarrollador full stack
 - Ejercicios 4.8.-4.12.
