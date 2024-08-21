@@ -196,3 +196,48 @@ Define una función llamada **mostLikes** que reciba una _lista de blogs_ como p
 ```
 
 Si hay muchos bloggers importantes, entonces es suficiente para mostrar cualquiera de ellos.
+
+## Ejercicios 4.8.-4.12
+
+>Advertencia: Si te encuentras utilizando los métodos `async/await` y `then` en el mismo código, es casi seguro que estás haciendo algo mal. Usa uno u otro y no mezcles los dos.
+
+### 4.8: Pruebas de Lista de Blogs, paso 1
+
+Utiliza la librería [**SuperTest**](https://www.npmjs.com/package/supertest) para escribir una prueba que realice
+una solicitud HTTP GET a la URL `/api/blogs`.
+Verifica que la aplicación de la lista de blogs devuelva la cantidad correcta de publicaciones de blog en formato JSON.
+
+Una vez finalizada la prueba, refactoriza el controlador de ruta para usar la sintaxis `async/await` en lugar de _promesas_.
+
+Ten en cuenta que tendrás que realizar cambios similares en el código a los que fueron hechos en el [material](https://fullstackopen.com/es/part4/probando_el_backend#entorno-de-prueba), como definir el entorno de prueba para que puedas escribir pruebas que usan una base de datos separada.
+
+>NB: cuando estás escribiendo tus pruebas es mejor _no ejecutarlas todas_, solo ejecuta aquellas en las que estás trabajando.
+Lee más sobre esto [aquí](https://fullstackopen.com/es/part4/probando_el_backend#ejecucion-de-pruebas-una-por-una).
+
+### 4.9: Pruebas de Lista de Blogs, paso 2
+
+Escribe una prueba que verifique que la propiedad de identificador único de las publicaciones del blog se llame `id`, de manera predeterminada, la base de datos nombra la propiedad `_id`.
+
+Realiza los cambios necesarios en el código para que pase la prueba.
+El método [`toJSON`](https://fullstackopen.com/es/part3/guardando_datos_en_mongo_db#backend-conectado-a-una-base-de-datos) discutido en la parte 3 es un lugar apropiado para definir el parámetro `id`.
+
+### 4.10: Pruebas de Lista de Blogs, paso 3
+
+Escribe una prueba que verifique que al realizar una solicitud HTTP POST a la URL `/api/blogs` se crea correctamente una nueva publicación de blog.
+Como mínimo, verifica que el número total de blogs en el sistema se incrementa en uno.
+También puedes verificar que el contenido de la publicación del blog se guarde correctamente en la base de datos.
+
+Una vez finalizada la prueba, refactoriza la operación para usar `async/await` en lugar de promesas.
+
+### 4.11*: Pruebas de Lista de Blogs, paso 4
+
+Escribe una prueba que verifique que si la propiedad likes falta en la solicitud, tendrá el valor 0 por defecto.
+No pruebes las otras propiedades de los blogs creados todavía.
+
+Realiza los cambios necesarios en el código para que pase la prueba.
+
+### 4.12*: Pruebas de lista de blogs, paso 5
+
+Escribe una prueba relacionada con la creación de blogs nuevos a través del endpoint `/api/blogs`, que verifique que si faltan las propiedades `title` o `url` de los datos solicitados, el backend responde a la solicitud con el código de estado `400 Bad Request`.
+
+Realiza los cambios necesarios en el código para que pase la prueba.

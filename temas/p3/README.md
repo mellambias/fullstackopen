@@ -91,6 +91,15 @@
   Permite eliminar el try/catch enviando todas las excepciones al middleware de que maneja los errores
 - Optimización de la función beforeEach
 - El juramento de un verdadero desarrollador full stack
+  - El desarrollo full stack es extremadamente difícil , por eso usaré todos los medios posibles para hacerlo más fácil:
+    - Mantendré la consola de desarrollador del navegador abierta todo el tiempo
+    - Usaré la pestaña "Network" dentro de las herramientas de desarrollo del navegador, para asegurarme que el frontend y el backend se comuniquen como espero
+    - Mantendré constantemente un ojo en el estado del servidor, para asegurarme de que los datos enviados allí por el frontend se guarden como espero
+    - Vigilaré la base de datos para confirmar que los datos enviados por el backend se guarden en el formato correcto
+    - Progresaré en pequeños pasos
+    - Escribiré muchos `console.log` para asegurarme de que entiendo cómo se comporta el código y las pruebas; y para ayudarme a identificar problemas
+    - Si mi código no funciona, no escribiré más código. En su lugar, comenzaré a eliminar código hasta que funcione o simplemente volveré a un estado en el que todo aún funciona
+    - Si una prueba no pasa, me aseguraré de que la funcionalidad probada funcione correctamente en la aplicación
 - Ejercicios 4.8.-4.12.
 - Refactorizando pruebas
 - Ejercicios 4.13.-4.14
