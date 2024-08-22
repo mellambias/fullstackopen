@@ -8,17 +8,19 @@
 		"start": "cross-env NODE_ENV=production node index.js",
 		"dev": "cross-env NODE_ENV=devolopment nodemon index.js",
 		"test": "cross-env NODE_ENV=test node --test",
-		"test:name": "cross-env NODE_ENV=test node --test --test-name-pattern",
 		"debug": "cross-env NODE_ENV=debugging nodemon --inspect index.js",
 		"build:ui": "rm -rf dist && pnpm --prefix ../../p2/part2-notes-frontend run build && cp -r dist ../../p3",
 		"build:server": "git add . && git commit -m serverbuild && git push && pnpm run git:tree",
 		"deploy:full": "pnpm run build:ui && pnpm run build:server",
-		"git:tree": "pnpm --prefix ../../ run git:tree"
+		"git:tree": "pnpm --prefix ../../ run git:tree",
+		"test:user:only": "cross-env NODE_ENV=test node --test --test-only **/users_api.test.js ",
+		"test:user": "cross-env NODE_ENV=test node --test **/users_api.test.js "
 	},
 	"keywords": ["node"],
 	"author": "Miguel E. Llambias Llansó",
 	"license": "ISC",
 	"dependencies": {
+		"bcrypt": "5.1.1",
 		"cors": "2.8.5",
 		"cross-env": "7.0.3",
 		"dotenv": "16.4.5",

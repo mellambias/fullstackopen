@@ -103,3 +103,12 @@
 - Ejercicios 4.8.-4.12.
 - Refactorizando pruebas
 - Ejercicios 4.13.-4.14
+
+### [Administración de usuarios](https://fullstackopen.com/es/part4/administracion_de_usuarios)
+
+- Referencias entre colecciones
+- Esquema de Mongoose para usuarios
+- Creando usuarios
+  - libreria [`bcrypt`](https://www.npmjs.com/package/bcrypt) bcrypt is a password-hashing function
+- Creación de una nueva nota
+- Populate

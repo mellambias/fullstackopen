@@ -5,8 +5,9 @@ const app = express();
 const serverConfig = require("./utils/config");
 const logger = require("./utils/logger");
 const mongoose = require("mongoose");
-const notesRouter = require("./controllers/notes");
 const middleware = require("./utils/middleware");
+const notesRouter = require("./controllers/notes");
+const userRouter = require("./controllers/users");
 
 const url = serverConfig.getMongoURI();
 
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use(middleware.requestLogger);
 
 app.use("/api/notes", notesRouter);
+app.use("/api/users", userRouter);
 
 // controlador de solicitudes no encontradas
 app.use(middleware.unknownEndpoint);

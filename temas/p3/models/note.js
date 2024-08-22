@@ -1,4 +1,6 @@
+const { type } = require("express/lib/response");
 const logger = require("../utils/logger");
+const { apliBlackList } = require("../utils/models");
 const mongoose = require("mongoose");
 // Esquema de la nota
 const noteSchema = new mongoose.Schema({
@@ -11,21 +13,20 @@ const noteSchema = new mongoose.Schema({
 		type: Boolean,
 	},
 	date: Date,
+	// Expandamos el esquema para que contenga información sobre el usuario que la creó
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "User",
+	},
 });
 
 // configuramos el formato de respuesta JSON para que incluya el id de la nota y no el _id de mongoDB
 // https://mongoosejs.com/docs/api/document.html#transform
 noteSchema.set("toJSON", {
 	transform: (document, ret, options) => {
-		const newDocument = {
-			id: document._id.toString(),
-		};
-		for (const key in ret) {
-			if (key !== "_id" && key !== "__v") {
-				newDocument[key] = ret[key];
-			}
-		}
-		return newDocument;
+		const blackList = ["_id", "_v"];
+		ret.id = ret._id.toString();
+		return apliBlackList(ret, blackList);
 	},
 });
 

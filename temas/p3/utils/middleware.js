@@ -15,12 +15,19 @@ const unknownEndpoint = (req, res) => {
 
 const errorHandler = (err, req, res, next) => {
 	logger.error("name", err.name, "message", err.message);
-
+	console.error(err);
 	switch (err.name) {
 		case "CastError":
 			return res.status(400).send({ error: err.message });
 		case "ValidationError":
 			return res.status(400).json({ error: err.message });
+		case "MongoServerError":
+			if (err.message.includes("E11000 duplicate key error")) {
+				return res
+					.status(400)
+					.json({ error: "expected `username` to be unique" });
+			}
+			break;
 		default:
 			break;
 	}
