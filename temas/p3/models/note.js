@@ -24,7 +24,7 @@ const noteSchema = new mongoose.Schema({
 // https://mongoosejs.com/docs/api/document.html#transform
 noteSchema.set("toJSON", {
 	transform: (document, ret, options) => {
-		const blackList = ["_id", "_v"];
+		const blackList = ["_id", "__v"];
 		ret.id = ret._id.toString();
 		return apliBlackList(ret, blackList);
 	},

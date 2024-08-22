@@ -6,12 +6,24 @@ content-type: application/json
 "important": true
 }
 
-### Nota que no cumple con los criterios
+### Nota con usuario
 
 POST http://localhost:3002/api/notes HTTP/1.1
 content-type: application/json
 
 {
-"content": "lol",
-"important": true
+"content": "User id of the note creator is at the start sent along de request",
+"important": true,
+"userId":"66c723d9652caa1d3ac9ef29"
+}
+
+### Nota con usuario
+
+POST http://localhost:3002/api/notes HTTP/1.1
+content-type: application/json
+
+{
+"content": "Another note of the same user",
+"important": true,
+"userId":"66c723d9652caa1d3ac9ef29"
 }
