@@ -261,3 +261,198 @@ Utiliza `async/await`.
 La aplicación principalmente necesita _actualizar la cantidad de likes_ para una publicación de blog. Puedes implementar esta funcionalidad de la misma manera que implementamos actualizar notas en la parte 3.
 
 Implementa pruebas para esta funcionalidad.
+
+## Ejercicios 4.15.-4.23
+
+En los próximos ejercicios, se implementarán los conceptos básicos de la gestión de usuarios para la aplicación de lista de blogs.
+La forma más segura es seguir el material del curso desde el capítulo de la parte 4 [Administración de usuarios](https://fullstackopen.com/es/part4/administracion_de_usuarios) hasta el capítulo [Autenticación basada en token](https://fullstackopen.com/es/part4/autenticacion_basada_en_token).
+Por supuesto, también puedes utilizar tu creatividad.
+
+>Una advertencia más: Si notas que estás mezclando llamadas async/await y then, es 99% seguro que estás haciendo algo mal. Utiliza uno u otro, nunca ambos.
+
+### 4.15: Expansión de la Lista de Blogs, paso 3
+
+Implementa una forma de crear nuevos usuarios realizando una solicitud POST HTTP a la dirección `api/users`.
+Los usuarios tienen `username`, `password` y `name`.
+
+_No guardes las contraseñas en la base de datos como texto sin cifrar_, utiliza la librería `bcrypt` como hicimos en el capítulo de la parte 4 [Creando usuarios](https://fullstackopen.com/es/part4/administracion_de_usuarios#creando-usuarios).
+
+>NB Algunos usuarios de Windows han tenido problemas con `bcrypt`. Si tienes problemas, elimina la librería con el comando
+
+```shell
+npm uninstall bcrypt
+```
+
+e instala `bcryptjs` en su lugar.
+
+Implementa una forma de ver los detalles de todos los usuarios realizando una solicitud HTTP adecuada.
+
+La lista de usuarios puede, por ejemplo, tener el siguiente aspecto:
+![navegador en api/users mostrando datos en formato JSON de dos usuarios](img/image-3.png)
+
+## 4.16*: Expansión de la Lista de Blogs, paso 4
+
+Agrega una funcionalidad que agregue las siguientes restricciones para la creación de nuevos usuarios:
+
+- Deben proporcionarse tanto el `username` como `password` y
+- ambos deben tener al menos 3 caracteres.
+- El username debe ser único.
+
+La operación debe responder
+
+- con un _código de estado adecuado_ y
+- algún tipo de mensaje de error si se crea un usuario no válido.
+
+>NB No pruebes las restricciones de `password` con las validaciones de Mongoose. No es una buena idea porque la password recibida por el backend y el hash de password guardado en la base de datos no son lo mismo. _La longitud de la contraseña debe validarse en el controlador_ como hicimos en la [parte 3 antes de usar la validación de Mongoose](https://fullstackopen.com/es/part3/validacion_y_es_lint).
+
+Además, **implementa pruebas** que verifiquen que no se creen usuarios no válidos y que una operación de agregar usuario que sea no válida devuelva un código de estado adecuado y un mensaje de error.
+
+>NB si decides definir pruebas en múltiples archivos, debes notar que por defecto cada archivo de prueba se ejecuta en su propio proceso (_ver Modelo de ejecución de pruebas_ en la [documentación](https://nodejs.org/api/test.html#test-runner-execution-model)). La consecuencia de esto es que diferentes archivos de prueba se ejecutan al mismo tiempo. Dado que las pruebas comparten la misma base de datos, la ejecución simultánea puede causar problemas, que pueden evitarse ejecutando las pruebas con la opción `--test-concurrency=1`, es decir, definiéndolas para que se ejecuten secuencialmente.
+
+### 4.17: Expansión de la Lista de Blogs, paso 5
+
+Expande los blogs para que cada blog contenga información sobre el creador del blog.
+
+Modifica la adición de nuevos blogs para que cuando se cree un nuevo blog, cualquier usuario de la base de datos sea designado como su creador (por ejemplo, el que se encontró primero). Implementa esto de acuerdo con el capítulo de la parte 4 [populate](https://fullstackopen.com/es/part4/administracion_de_usuarios#populate). El usuario designado como creador no importa todavía. La funcionalidad se termina en el ejercicio 4.19.
+
+Modifica la lista de todos los blogs para que la información de usuario del creador se muestre con el blog:
+
+![api/blogs con información de usuario en formato JSON](img/image-4.png)
+
+y la lista de todos los usuarios también muestra los blogs creados por cada usuario:
+
+![api/users con información de blogs en formato JSON](img/image-5.png)
+
+### 4.18: Expansión de la Lista de Blogs, paso 6
+
+Implementar la autenticación basada en token según la parte 4 [Autenticación basada en token](https://fullstackopen.com/es/part4/autenticacion_basada_en_token).
+
+### 4.19: Expansión de la Lista de Blogs, paso 7
+
+Modifica la adición de nuevos blogs para que solo sea posible si se envía un token válido con la solicitud HTTP POST.
+El usuario identificado por el token se designa como el creador del blog.
+
+### 4.20*: Expansión de la Lista de Blogs, paso 8
+
+Este [ejemplo](https://fullstackopen.com/es/part4/autenticacion_basada_en_token#limitacion-de-la-creacion-de-nuevas-notas-a-los-usuarios-registrados) de la parte 4 muestra cómo tomar el token del encabezado con la función auxiliar `getTokenFrom`.
+
+Si usaste la misma solución, refactoriza para _llevar el token a un middleware_.
+El middleware debe tomar el token del encabezado Authorization y debe asignarlo al campo token del objeto `request`.
+
+En otras palabras, si registras este middleware en el archivo `app.js` antes de las rutas
+
+```js
+app.use(middleware.tokenExtractor)
+```
+
+Las rutas deben poder acceder al **token** usando `request.token`:
+
+```js
+blogsRouter.post('/', async (request, response) => {
+  // ..
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  // ..
+})
+```
+
+Recuerda que una función _middleware es una función con tres parámetros_, que al final llama al último parámetro `next` para mover el control al siguiente middleware:
+
+```js
+const tokenExtractor = (request, response, next) => {
+  // código que extrae el token
+
+  next()
+}
+```
+
+### 4.21*: Expansión de la Lista de Blogs, paso 9
+
+Cambia la operación de **eliminar blogs** para que el blog solo pueda ser eliminado por el usuario que lo agregó.
+Por lo tanto, eliminar un blog solo es posible si el `token` enviado con la solicitud es el mismo que el del creador del blog.
+
+Si se intenta eliminar un blog sin un token o por un usuario incorrecto, la operación debe devolver un _código de estado adecuado_.
+
+Ten en cuenta que si obtienes un blog de la base de datos,
+
+```js
+const blog = await Blog.findById(...)
+```
+
+el campo `blog.user` no contiene una cadena, sino un _objeto_. Entonces, si deseas comparar el ID del objeto obtenido de la base de datos y un ID de cadena, la operación de comparación normal no funciona. El ID obtenido de la base de datos debe primero convertirse en una cadena.
+
+```js
+if ( blog.user.toString() === userid.toString() ) ...
+```
+
+### 4.22*: Expansión de la Lista de Blogs, paso 10
+
+Tanto la creación de un nuevo blog como su eliminación necesitan averiguar la identidad del usuario que está realizando la operación.
+El middleware `tokenExtractor` que hicimos en el ejercicio 4.20 ayuda, pero los controladores de las operaciones `post` y `delete` necesitan averiguar quién es el usuario que posee un token específico.
+
+Ahora cree un nuevo middleware `userExtractor`, que encuentre al `usuario` y lo guarde en el `objeto de solicitud`. Cuando registras el middleware en `app.js`
+
+```js
+app.use(middleware.userExtractor)
+```
+
+el usuario se guardara en el campo `request.user`:
+
+```js
+blogsRouter.post('/', async (request, response) => {
+  // obtén usuario desde el objeto de solicitud
+  const user = request.user
+  // ..
+})
+
+blogsRouter.delete('/:id', async (request, response) => {
+  // obtén usuario desde el objeto de solicitud
+  const user = request.user
+  // ..
+})
+```
+
+Ten en cuenta que es posible registrar un middleware solo para un conjunto específico de rutas. Entonces, en lugar de usar `userExtractor` con todas las rutas,
+
+```js
+const middleware = require('../utils/middleware');
+// ...
+
+// usa el middleware en todas las rutas
+app.use(middleware.userExtractor)
+
+app.use('/api/blogs', blogsRouter)  
+app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
+```
+
+podríamos registrarlo para que solo se ejecute con las rutas de `/api/blogs`:
+
+```js
+const middleware = require('../utils/middleware');
+// ...
+
+// usa el middleware solo en las rutas de api/blogs
+app.use('/api/blogs', middleware.userExtractor, blogsRouter)
+app.use('/api/users', usersRouter)
+app.use('/api/login', loginRouter)
+```
+
+Como puede verse, esto sucede al encadenarse múltiples middlewares como argumentos de la función use. También sería posible registrar un middleware solo para una operación específica:
+
+```js
+const middleware = require('../utils/middleware');
+// ...
+
+router.post('/', middleware.userExtractor, async (request, response) => {
+  // ...
+})
+```
+
+### 4.23*: Expansión de la Lista de Blogs, paso 11
+
+Después de agregar la autenticación basada en token, las pruebas para agregar un nuevo blog se rompieron. Arréglalas.
+También escribe una nueva prueba para asegurarte de que la adición de un blog falla con el código de estado adecuado `401 Unauthorized` si no se proporciona un token.
+
+>[Esto](https://github.com/visionmedia/supertest/issues/398) probablemente sea útil al hacer la corrección.
+
+Este es el último ejercicio de esta parte del curso y es hora de enviar tu código a GitHub y marcar todos sus ejercicios terminados en el [sistema de envío de ejercicios](https://studies.cs.helsinki.fi/stats/courses/fullstackopen).
