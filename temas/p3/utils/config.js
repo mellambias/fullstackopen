@@ -18,6 +18,7 @@ const config = {
 	server: {
 		PORT: process.env.PORT,
 	},
+	secret: process.env.SECRET,
 	getMongoURI() {
 		let env = process.env.NODE_ENV;
 		if (this.dataBases[env] === undefined) {
@@ -30,6 +31,9 @@ const config = {
 	},
 	getServerPort() {
 		return this.server.PORT;
+	},
+	getJwtSecret() {
+		return this.secret;
 	},
 };
 

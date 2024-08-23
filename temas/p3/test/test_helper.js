@@ -12,6 +12,19 @@ const initialNotes = [
 	},
 ];
 
+const initialUsers = [
+	{
+		username: "root",
+		name: "Root",
+		passwordHash: "123456",
+	},
+	{
+		username: "mluukkai",
+		name: "Matti Luukkainem",
+		password: "salainen",
+	},
+];
+
 async function nonExistingId() {
 	const note = new Note({ content: "Will be removed" });
 	await note.save();
@@ -21,20 +34,39 @@ async function nonExistingId() {
 }
 
 async function notesInDb() {
-	const notes = await Note.find({});
+	const notes = await Note.find({}).populate("user", { username: 1, name: 1 });
 	const notesToJson = notes.map((note) => {
 		return note.toJSON();
 	});
 	return notesToJson;
 }
 async function usersInDb() {
-	const users = await User.find({});
+	const users = await User.find({}).populate("notes", {
+		content: 1,
+		important: 1,
+	});
 	return users.map((user) => user.toJSON());
+}
+
+async function getToken(api, user) {
+	const { username, password } = user;
+	const jwtoken = await api
+		.post("/api/login")
+		.send({
+			username,
+			password,
+		})
+		.expect(200)
+		.expect("Content-Type", /application\/json/);
+
+	return jwtoken.body;
 }
 
 module.exports = {
 	initialNotes,
 	nonExistingId,
 	notesInDb,
+	initialUsers,
 	usersInDb,
+	getToken,
 };

@@ -1,6 +1,16 @@
 const notesRouter = require("express").Router();
 const Note = require("../models/note");
 const User = require("../models/user");
+const jwt = require("jsonwebtoken");
+const config = require("../utils/config");
+
+function getTokenFrom(request) {
+	const authorization = request.get("authorization");
+	if (authorization?.toLowerCase().startsWith("bearer ")) {
+		return authorization.substring(7);
+	}
+	return null;
+}
 
 notesRouter.get("/", async (req, res) => {
 	const notes = await Note.find({}).populate("user", { username: 1, name: 1 });
@@ -8,7 +18,10 @@ notesRouter.get("/", async (req, res) => {
 });
 
 notesRouter.get("/:id", async (req, res, next) => {
-	const note = await Note.findById(req.params.id);
+	const note = await Note.findById(req.params.id).populate("user", {
+		username: 1,
+		name: 1,
+	});
 	if (note) {
 		res.json(note);
 	} else {
@@ -33,8 +46,14 @@ notesRouter.put("/:id", async (req, res, next) => {
 
 notesRouter.post("/", async (req, res, next) => {
 	const note = req.body;
+	const decodedToken = jwt.verify(getTokenFrom(req), config.getJwtSecret());
+
+	if (!decodedToken) {
+		return res.status(401).json({ error: "token invalid" });
+	}
+
 	// localiza al usuario que creará la nota
-	const user = await User.findById(note.userId);
+	const user = await User.findById(decodedToken.id);
 
 	const newNote = new Note({
 		content: note.content,

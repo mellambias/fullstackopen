@@ -112,3 +112,18 @@
   - libreria [`bcrypt`](https://www.npmjs.com/package/bcrypt) bcrypt is a password-hashing function
 - Creación de una nueva nota
 - Populate
+
+### [Autenticación basada en token](https://fullstackopen.com/es/part4/autenticacion_basada_en_token)
+
+![Secuencia de autenticación](images/image-1.png)
+
+libreria [**jsonwebtoken**](https://github.com/auth0/node-jsonwebtoken)
+
+- Limitar la creación de nuevas notas solo a usuarios registrados
+- Solucion a problemas de la autenticación basada en Tokens
+  - Caducidad del token
+  - Comprobar en el servidor si el token es valido **server-side session**
+    - Se utilizan bases de datos especificas [**redis**](https://redis.io/) para almacenar datos de sessión al ser mas rapidas a costa de ser menos flexibles
+    - Se utilizan cookies para el paso de tokens entre cliente y servidor
+- Notas finales
+- Ejercicios 4.15.-4.23

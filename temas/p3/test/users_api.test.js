@@ -44,7 +44,7 @@ describe("cuando inicialmente solo existe un usuario en la bd", () => {
 		assert(userNames.includes(newUser.username));
 	});
 
-	test.only(
+	test(
 		"creation fails with proper statuscode and message if username already taken",
 		{ todo: true },
 		async () => {

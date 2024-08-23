@@ -28,6 +28,10 @@ const errorHandler = (err, req, res, next) => {
 					.json({ error: "expected `username` to be unique" });
 			}
 			break;
+		case "JsonWebTokenError":
+			return res.status(401).json({ error: "invalid token" });
+		case "TokenExpiredError":
+			return res.status(401).json({ error: "Token expired" });
 		default:
 			break;
 	}
