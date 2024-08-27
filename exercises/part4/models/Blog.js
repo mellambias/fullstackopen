@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const { apliBlackList } = require("../utils/models");
+const user = require("./user");
 
 const blogSchema = new mongoose.Schema({
 	title: {
@@ -16,19 +18,17 @@ const blogSchema = new mongoose.Schema({
 		type: Number,
 		default: 0,
 	},
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "User",
+	},
 });
 
 blogSchema.set("toJSON", {
-	transform: (document, ret) => {
-		const newDocument = {
-			id: ret._id.toString(),
-		};
-		for (const key in ret) {
-			if (key !== "_id" && key !== "__v") {
-				newDocument[key] = ret[key];
-			}
-		}
-		return newDocument;
+	transform: (document, ret, options) => {
+		const blackList = ["_id", "__v"];
+		ret.id = ret._id.toString();
+		return apliBlackList(ret, blackList);
 	},
 });
 

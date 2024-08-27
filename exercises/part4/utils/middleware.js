@@ -17,13 +17,22 @@ const errorHandler = (err, req, res, next) => {
 	logger.error("name", err.name, "message", err.message);
 
 	switch (err.name) {
-		case "CastError":
+		case "CastError": {
 			return res.status(404).send({ error: err.message });
-		case "ValidationError":
+		}
+		case "ValidationError": {
 			return res.status(400).json({ error: err.message });
-		default:
+		}
+		case "MongoServerError": {
+			if (err.message.includes("E11000 duplicate key error")) {
+				return res.status(400).json({ error: "Duplicate key error" });
+			}
 			break;
+		}
+		default:
+			console.log({ error: err.name, err: err.message });
 	}
+
 	next(err);
 };
 
