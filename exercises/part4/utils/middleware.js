@@ -29,6 +29,9 @@ const errorHandler = (err, req, res, next) => {
 			}
 			break;
 		}
+		case "credentialError": {
+			return res.status(401).json({ error: "Invalid username or password" });
+		}
 		default:
 			console.log({ error: err.name, err: err.message });
 	}

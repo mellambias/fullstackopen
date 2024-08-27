@@ -1,3 +1,5 @@
+const { get } = require("mongoose");
+
 require("dotenv").config();
 
 const config = {
@@ -18,6 +20,7 @@ const config = {
 	server: {
 		PORT: process.env.PORT,
 	},
+	token: process.env.SECRET,
 	getMongoURI() {
 		let entorno = process.env.NODE_ENV;
 		if (this.dataBases[entorno] === undefined) {
@@ -30,6 +33,9 @@ const config = {
 	},
 	getServerPort() {
 		return this.server.PORT;
+	},
+	getSecretToken() {
+		return this.token;
 	},
 };
 
