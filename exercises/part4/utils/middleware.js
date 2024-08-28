@@ -36,7 +36,7 @@ const errorHandler = (err, req, res, next) => {
 			return res.status(401).json({ error: "Invalid token" });
 		}
 		default:
-			console.log({ error: err.name, err: err.message });
+			console.log("error:", err.name, "err:", err);
 	}
 
 	next(err);

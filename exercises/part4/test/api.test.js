@@ -10,14 +10,19 @@ const mockBlogs = require("../mock/mockBlogs");
 const mockUsers = require("../mock/mockUsers");
 const api = supertest(app);
 const utils = require("./utils");
+const user = require("../models/user");
 
 describe("Blog API tests", () => {
 	beforeEach(async () => {
 		await Blog.deleteMany({});
-		const users = await utils.usersInDatabase();
+		await User.deleteMany({});
+		const user = await utils.createRootUser();
 		await Blog.insertMany(
-			mockBlogs.map((blog) => new Blog({ ...blog, user: users[0].id })),
+			mockBlogs.map((blog) => new Blog({ ...blog, user: user._id })),
 		);
+		const blogs = await utils.blogsInDatabase();
+		user.blogs = blogs.map((blog) => blog.id);
+		await user.save();
 	});
 
 	test("lista todos los blogs en formato JSON", { only: true }, async () => {
@@ -50,19 +55,7 @@ describe("Blog API tests", () => {
 		{ only: true },
 		async () => {
 			const blogsAfterpost = await utils.blogsInDatabase();
-
-			// logeamos al primer usuario registrado
-			const user = mockUsers[0];
-			const response = await api
-				.post("/api/login")
-				.send({
-					username: user.username,
-					password: user.password,
-				})
-				.expect(200)
-				.expect("Content-Type", /application\/json/);
-			assert.ok(response.body.token);
-			const token = response.body.token;
+			const token = await utils.loginFistUser(api);
 
 			// Creamos un blog enviando el token recibido
 			const newBlog = {
@@ -154,21 +147,48 @@ describe("Blog API tests", () => {
 		});
 	});
 	describe("Borrar publicación", () => {
-		test("Borrar una publicación existente", async () => {
-			const allBlogs = await utils.blogsInDatabase();
-			const blogToDelete = allBlogs.body[0];
+		describe("Borrar una publicación existente", () => {
+			test("con token invalido", { only: true }, async () => {
+				const allBlogs = await utils.blogsInDatabase();
+				const blogToDelete = allBlogs[0];
+				const token = "invalid";
 
-			await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+				await api
+					.delete(`/api/blogs/${blogToDelete.id}`)
+					.set("Authorization", `Bearer ${token}`)
+					.expect(401);
 
-			const allBlogsAfterDelete = await utils.blogsInDatabase();
-			assert.strictEqual(allBlogsAfterDelete.length, allBlogs.length - 1);
+				const allBlogsAfterDelete = await utils.blogsInDatabase();
+				assert.strictEqual(allBlogsAfterDelete.length, allBlogs.length);
+			});
+			test("con token valido", { only: true }, async () => {
+				const allBlogs = await utils.blogsInDatabase();
+				const allUsers = await utils.usersInDatabase();
+				const blogToDelete = allBlogs[0];
+				const token = await utils.loginFistUser(api);
+
+				await api
+					.delete(`/api/blogs/${blogToDelete.id}`)
+					.set("Authorization", `Bearer ${token}`)
+					.expect(204);
+
+				const allBlogsAfterDelete = await utils.blogsInDatabase();
+				const allUsersAfterDelete = await utils.usersInDatabase();
+
+				assert.strictEqual(allBlogsAfterDelete.length, allBlogs.length - 1);
+				assert.strictEqual(
+					allUsersAfterDelete[0].blogs.length,
+					allUsers[0].blogs.length - 1,
+				);
+			});
 		});
-
 		test("Borrar una publicación no existente", { only: true }, async () => {
 			const nonExistentId = "1111";
 			const blogsBefore = await utils.blogsInDatabase();
+			const token = await utils.loginFistUser(api);
 			const response = await api
 				.delete(`/api/blogs/${nonExistentId}`)
+				.set("Authorization", `Bearer ${token}`)
 				.expect(404);
 			const blogsAfter = await utils.blogsInDatabase();
 			assert.strictEqual(blogsBefore.length, blogsAfter.length);

@@ -46,9 +46,20 @@ async function createBlogForUser(user) {
 	}
 }
 
+// logeamos al primer usuario registrado
+async function loginFistUser(api) {
+	const user = mockUsers[0];
+	const response = await api.post("/api/login").send({
+		username: user.username,
+		password: user.password,
+	});
+	return response.body.token;
+}
+
 module.exports = {
 	blogsInDatabase,
 	usersInDatabase,
 	createRootUser,
 	createBlogForUser,
+	loginFistUser,
 };
