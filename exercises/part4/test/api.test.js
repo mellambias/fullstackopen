@@ -45,26 +45,72 @@ describe("Blog API tests", () => {
 		}
 	});
 
-	test("Crear una nueva publicación", { only: true }, async () => {
-		const blogsAfterpost = await utils.blogsInDatabase();
-		const newBlog = {
-			title: "Test Blog",
-			author: "Test Author",
-			url: "XXXXXXXXXXXXXXXX",
-			likes: 0,
-		};
+	test(
+		"Crear una nueva publicación con token valido",
+		{ only: true },
+		async () => {
+			const blogsAfterpost = await utils.blogsInDatabase();
 
-		const result = await api
-			.post("/api/blogs")
-			.send(newBlog)
-			.expect(201)
-			.expect("Content-Type", /application\/json/);
+			// logeamos al primer usuario registrado
+			const user = mockUsers[0];
+			const response = await api
+				.post("/api/login")
+				.send({
+					username: user.username,
+					password: user.password,
+				})
+				.expect(200)
+				.expect("Content-Type", /application\/json/);
+			assert.ok(response.body.token);
+			const token = response.body.token;
 
-		const allBlogs = await utils.blogsInDatabase();
-		assert.strictEqual(allBlogs.length, blogsAfterpost.length + 1);
-		assert.strictEqual(result.body.title, newBlog.title);
-		assert.ok(result.body.user);
-	});
+			// Creamos un blog enviando el token recibido
+			const newBlog = {
+				title: "Test Blog",
+				author: "Test Author",
+				url: "XXXXXXXXXXXXXXXX",
+				likes: 0,
+			};
+
+			const result = await api
+				.post("/api/blogs")
+				.set("Authorization", `Bearer ${token}`)
+				.send(newBlog)
+				.expect(201)
+				.expect("Content-Type", /application\/json/);
+
+			const allBlogs = await utils.blogsInDatabase();
+			assert.strictEqual(allBlogs.length, blogsAfterpost.length + 1);
+			assert.strictEqual(result.body.title, newBlog.title);
+			assert.ok(result.body.user);
+		},
+	);
+	test(
+		"Crear una nueva publicación con token no valido",
+		{ only: true },
+		async () => {
+			const blogsAfterpost = await utils.blogsInDatabase();
+			const token = "tokenInvalido";
+
+			// Creamos un blog enviando el token recibido
+			const newBlog = {
+				title: "Test Blog",
+				author: "Test Author",
+				url: "XXXXXXXXXXXXXXXX",
+				likes: 0,
+			};
+
+			const result = await api
+				.post("/api/blogs")
+				.set("Authorization", `Bearer ${token}`)
+				.send(newBlog)
+				.expect(401)
+				.expect("Content-Type", /application\/json/);
+
+			const allBlogs = await utils.blogsInDatabase();
+			assert.strictEqual(allBlogs.length, blogsAfterpost.length);
+		},
+	);
 	describe("restricciones del blog", () => {
 		let blogsBeforePost;
 		beforeEach(async () => {
