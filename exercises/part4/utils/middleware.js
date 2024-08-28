@@ -17,8 +17,6 @@ const unknownEndpoint = (req, res) => {
 };
 
 const errorHandler = (err, req, res, next) => {
-	logger.error("name", err.name, "message", err.message);
-
 	switch (err.name) {
 		case "CastError": {
 			return res.status(404).send({ error: err.message });
@@ -39,7 +37,7 @@ const errorHandler = (err, req, res, next) => {
 			return res.status(401).json({ error: "Invalid token" });
 		}
 		default:
-			console.log("error:", err.name, "err:", err);
+			logger.error("name", err.name, "message", err.message);
 	}
 
 	next(err);
@@ -51,7 +49,6 @@ function tokenExtractor(request, res, next) {
 	if (authorization?.toLowerCase().startsWith("bearer ")) {
 		request.token = authorization.substring(7);
 	}
-
 	next();
 }
 

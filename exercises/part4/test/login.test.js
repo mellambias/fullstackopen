@@ -14,7 +14,7 @@ describe("user login", () => {
 		await utils.createRootUser();
 	});
 
-	test("login with correct credentials", { only: true }, async () => {
+	test("login with correct credentials", async () => {
 		const user = mockUsers[0];
 		const response = await api
 			.post("/api/login")
@@ -26,7 +26,7 @@ describe("user login", () => {
 		assert.ok(response.body.token);
 	});
 
-	test("login with incorrect credentials", { only: 1 }, async () => {
+	test("login with incorrect credentials", async () => {
 		const user = mockUsers[0];
 		const response = await api
 			.post("/api/login")

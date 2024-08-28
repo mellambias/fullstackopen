@@ -25,7 +25,7 @@ describe("Blog API tests", () => {
 		await user.save();
 	});
 
-	test("lista todos los blogs en formato JSON", { only: true }, async () => {
+	test("lista todos los blogs en formato JSON", async () => {
 		const allBlogs = await api
 			.get("/api/blogs")
 			.expect(200)
@@ -50,60 +50,52 @@ describe("Blog API tests", () => {
 		}
 	});
 
-	test(
-		"Crear una nueva publicación con token valido",
-		{ only: true },
-		async () => {
-			const blogsAfterpost = await utils.blogsInDatabase();
-			const token = await utils.loginFistUser(api);
+	test("Crear una nueva publicación con token valido", async () => {
+		const blogsAfterpost = await utils.blogsInDatabase();
+		const token = await utils.loginFistUser(api);
 
-			// Creamos un blog enviando el token recibido
-			const newBlog = {
-				title: "Test Blog",
-				author: "Test Author",
-				url: "XXXXXXXXXXXXXXXX",
-				likes: 0,
-			};
+		// Creamos un blog enviando el token recibido
+		const newBlog = {
+			title: "Test Blog",
+			author: "Test Author",
+			url: "XXXXXXXXXXXXXXXX",
+			likes: 0,
+		};
 
-			const result = await api
-				.post("/api/blogs")
-				.set("Authorization", `Bearer ${token}`)
-				.send(newBlog)
-				.expect(201)
-				.expect("Content-Type", /application\/json/);
+		const result = await api
+			.post("/api/blogs")
+			.set("Authorization", `Bearer ${token}`)
+			.send(newBlog)
+			.expect(201)
+			.expect("Content-Type", /application\/json/);
 
-			const allBlogs = await utils.blogsInDatabase();
-			assert.strictEqual(allBlogs.length, blogsAfterpost.length + 1);
-			assert.strictEqual(result.body.title, newBlog.title);
-			assert.ok(result.body.user);
-		},
-	);
-	test(
-		"Crear una nueva publicación con token no valido",
-		{ only: true },
-		async () => {
-			const blogsAfterpost = await utils.blogsInDatabase();
-			const token = "tokenInvalido";
+		const allBlogs = await utils.blogsInDatabase();
+		assert.strictEqual(allBlogs.length, blogsAfterpost.length + 1);
+		assert.strictEqual(result.body.title, newBlog.title);
+		assert.ok(result.body.user);
+	});
+	test("Crear una nueva publicación con token no valido", async () => {
+		const blogsAfterpost = await utils.blogsInDatabase();
+		const token = "tokenInvalido";
 
-			// Creamos un blog enviando el token recibido
-			const newBlog = {
-				title: "Test Blog",
-				author: "Test Author",
-				url: "XXXXXXXXXXXXXXXX",
-				likes: 0,
-			};
+		// Creamos un blog enviando el token recibido
+		const newBlog = {
+			title: "Test Blog",
+			author: "Test Author",
+			url: "XXXXXXXXXXXXXXXX",
+			likes: 0,
+		};
 
-			const result = await api
-				.post("/api/blogs")
-				.set("Authorization", `Bearer ${token}`)
-				.send(newBlog)
-				.expect(401)
-				.expect("Content-Type", /application\/json/);
+		const result = await api
+			.post("/api/blogs")
+			.set("Authorization", `Bearer ${token}`)
+			.send(newBlog)
+			.expect(401)
+			.expect("Content-Type", /application\/json/);
 
-			const allBlogs = await utils.blogsInDatabase();
-			assert.strictEqual(allBlogs.length, blogsAfterpost.length);
-		},
-	);
+		const allBlogs = await utils.blogsInDatabase();
+		assert.strictEqual(allBlogs.length, blogsAfterpost.length);
+	});
 	describe("restricciones del blog", () => {
 		let blogsBeforePost;
 		beforeEach(async () => {
@@ -116,9 +108,11 @@ describe("Blog API tests", () => {
 				author: "Test Author",
 				url: "XXXXXXXXXXXXXXXX",
 			};
+			const token = await utils.loginFistUser(api);
 
 			const result = await api
 				.post("/api/blogs")
+				.set("Authorization", `Bearer ${token}`)
 				.send(newBlog)
 				.expect(201)
 				.expect("Content-Type", /application\/json/);
@@ -132,6 +126,7 @@ describe("Blog API tests", () => {
 				url: "XXXXXXXXXXXXXXXX",
 				likes: 0,
 			};
+			const token = await utils.loginFistUser(api);
 
 			const blogWithoutUrl = {
 				title: "Test Blog",
@@ -141,14 +136,23 @@ describe("Blog API tests", () => {
 
 			const blogsAfert = await utils.blogsInDatabase();
 
-			await api.post("/api/blogs").send(blogWithoutTitle).expect(400);
-			await api.post("/api/blogs").send(blogWithoutUrl).expect(400);
+			await api
+				.post("/api/blogs")
+				.set("Authorization", `Bearer ${token}`)
+				.send(blogWithoutTitle)
+				.expect(400);
+
+			await api
+				.post("/api/blogs")
+				.set("Authorization", `Bearer ${token}`)
+				.send(blogWithoutUrl)
+				.expect(400);
 			assert.strictEqual(blogsAfert.length, blogsBeforePost.length);
 		});
 	});
 	describe("Borrar publicación", () => {
 		describe("Borrar una publicación existente", () => {
-			test("con token invalido", { only: true }, async () => {
+			test("con token invalido", async () => {
 				const allBlogs = await utils.blogsInDatabase();
 				const blogToDelete = allBlogs[0];
 				const token = "invalid";
@@ -161,7 +165,7 @@ describe("Blog API tests", () => {
 				const allBlogsAfterDelete = await utils.blogsInDatabase();
 				assert.strictEqual(allBlogsAfterDelete.length, allBlogs.length);
 			});
-			test("con token valido", { only: true }, async () => {
+			test("con token valido", async () => {
 				const allBlogs = await utils.blogsInDatabase();
 				const allUsers = await utils.usersInDatabase();
 				const blogToDelete = allBlogs[0];
@@ -182,7 +186,7 @@ describe("Blog API tests", () => {
 				);
 			});
 		});
-		test("Borrar una publicación no existente", { only: true }, async () => {
+		test("Borrar una publicación no existente", async () => {
 			const nonExistentId = "1111";
 			const blogsBefore = await utils.blogsInDatabase();
 			const token = await utils.loginFistUser(api);
@@ -211,21 +215,17 @@ describe("Blog API tests", () => {
 			assert.strictEqual(result.body.likes, updatedLikes);
 		});
 
-		test(
-			"No se actualiza una publicación no existente",
-			{ only: true },
-			async () => {
-				const nonExistentId = "XXXX";
-				const updatedLikes = 10;
+		test("No se actualiza una publicación no existente", async () => {
+			const nonExistentId = "XXXX";
+			const updatedLikes = 10;
 
-				const response = await api
-					.put(`/api/blogs/${nonExistentId}`)
-					.send({ likes: updatedLikes })
-					.expect(404);
+			const response = await api
+				.put(`/api/blogs/${nonExistentId}`)
+				.send({ likes: updatedLikes })
+				.expect(404);
 
-				assert(response.body.error.includes("Cast to ObjectId failed"));
-			},
-		);
+			assert(response.body.error.includes("Cast to ObjectId failed"));
+		});
 	});
 });
 
@@ -311,27 +311,29 @@ describe("User API tests", () => {
 			);
 		});
 	});
-	test(
-		"muestra todos los usuarios en formato JSON",
-		{ only: true },
-		async () => {
-			const result = await api
-				.get("/api/users")
-				.expect(200)
-				.expect("Content-Type", /application\/json/);
+	test("muestra todos los usuarios en formato JSON", async () => {
+		const initialUsers = await utils.usersInDatabase();
+		const result = await api
+			.get("/api/users")
+			.expect(200)
+			.expect("Content-Type", /application\/json/);
 
-			const userNames = result.body.map((user) => user.username);
-			const blog = result.body[0].blogs[0];
-
-			assert.strictEqual(result.body.length, 1);
-			assert(userNames.includes(mockUsers[0].username));
-
-			assert.ok(blog.url);
-			assert.ok(blog.title);
-			assert.ok(blog.author);
-			assert.ok(blog.id);
-		},
-	);
+		const userNames = result.body.map((user) => user.username);
+		assert.ok(userNames.includes("root"));
+		assert.strictEqual(result.body.length, initialUsers.length);
+		for (const user of result.body) {
+			assert.ok(user.id);
+			assert.ok(user.username);
+			assert.ok(user.name);
+			assert.ok(!user.password);
+			for (const blog of user.blogs) {
+				assert.ok(blog.id);
+				assert.ok(blog.title);
+				assert.ok(blog.author);
+				assert.ok(blog.url);
+			}
+		}
+	});
 });
 after(async () => {
 	await mongoose.connection.close();

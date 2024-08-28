@@ -1,5 +1,3 @@
-const { get } = require("mongoose");
-
 require("dotenv").config();
 
 const config = {

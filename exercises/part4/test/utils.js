@@ -41,7 +41,6 @@ async function createBlogForUser(user) {
 		await rootUser.save();
 		return blog;
 	} catch (error) {
-		console.log(error);
 		return error;
 	}
 }

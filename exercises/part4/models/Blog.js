@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { apliBlackList } = require("../utils/models");
-const user = require("./user");
 
 const blogSchema = new mongoose.Schema({
 	title: {
