@@ -3,9 +3,11 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
-function LoginForm({ handleLogin, username, setUsername, password, setPassword }) {
+function LoginForm({ handleLogin }) {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   return (
-    <form onSubmit={handleLogin}>
+    <form onSubmit={(event) => handleLogin(event, username, password)}>
       <div>
         username
         <input
@@ -34,7 +36,7 @@ function CreateBlogForm({ createBlog }) {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
   return (
-    <form onSubmit={() => createBlog(title, author, url)}>
+    <form onSubmit={(event) => createBlog(event, title, author, url)}>
       <div>
         title
         <input
@@ -70,8 +72,7 @@ function CreateBlogForm({ createBlog }) {
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -86,15 +87,13 @@ const App = () => {
     }
   }, [])
 
-  async function handleLogin(event) {
+  async function handleLogin(event, username, password) {
     event.preventDefault()
     try {
       const user = await loginService.login(username, password)
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
-      setUsername('')
-      setPassword('')
     } catch (error) {
       console.error("Se ha producido un error", error.response.statusText)
     }
@@ -106,7 +105,8 @@ const App = () => {
     blogService.setToken(null)
   }
 
-  const createBlog = async (title, author, url) => {
+  const createBlog = async (event, title, author, url) => {
+    event.preventDefault()
     const newBlog = {
       title,
       author,
@@ -125,11 +125,7 @@ const App = () => {
       <div>
         <h2>log in to application</h2>
         <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword} />
+          handleLogin={handleLogin} />
       </div>
     )
   }
