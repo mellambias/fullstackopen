@@ -3,6 +3,12 @@ import services from "../config";
 
 const endpoint = services.getEndPoint("notes");
 
+let token = null;
+
+const setToken = (newToken) => {
+	token = `Bearer ${newToken}`;
+};
+
 const getAll = () => {
 	const request = axios.get(endpoint);
 	const nonExisting = {
@@ -13,9 +19,13 @@ const getAll = () => {
 	return request.then((response) => response.data.concat(nonExisting));
 };
 
-const create = (newNote) => {
-	const request = axios.post(endpoint, newNote);
-	return request.then((response) => response.data);
+const create = async (newNote) => {
+	const config = {
+		headers: { Authorization: token },
+	};
+
+	const response = await axios.post(endpoint, newNote, config);
+	return response.data;
 };
 
 const update = (id, newNote) => {
@@ -27,4 +37,5 @@ export default {
 	getAll,
 	create,
 	update,
+	setToken,
 };

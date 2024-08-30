@@ -5,6 +5,7 @@ const config = {
 	},
 	endPoints: {
 		notes: "/api/notes",
+		login: "/api/login",
 	},
 	getEndPoint: function (endpoint) {
 		//return `${this.jsonServer.host}:${this.jsonServer.port}${this.endPoints[endpoint]}`;
