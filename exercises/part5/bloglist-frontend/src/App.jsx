@@ -2,76 +2,28 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import LoginForm from './components/LoginForm'
+import CreateBlogForm from './components/CreateBlogForm'
+import Notification from './components/Notification'
 
-function LoginForm({ handleLogin }) {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  return (
-    <form onSubmit={(event) => handleLogin(event, username, password)}>
-      <div>
-        username
-        <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
-        />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
-        />
-      </div>
-      <button type="submit">login</button>
-    </form>
-  )
+const defaultValue = {
+  message: null,
+  type: "success",
+  timeout: 2000
 }
 
-function CreateBlogForm({ createBlog }) {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-  return (
-    <form onSubmit={(event) => createBlog(event, title, author, url)}>
-      <div>
-        title
-        <input
-          type="text"
-          name="Title"
-          value={title}
-          onChange={({ target }) => setTitle(target.value)}
-        />
-      </div>
-      <div>
-        author
-        <input
-          type="text"
-          name="Author"
-          value={author}
-          onChange={({ target }) => setAuthor(target.value)}
-        />
-      </div>
-      <div>
-        url
-        <input
-          type="text"
-          name="Url"
-          value={url}
-          onChange={({ target }) => setUrl(target.value)}
-        />
-      </div>
-      <button type="submit">create</button>
-    </form>
-  )
-}
+
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
+  const [message, setMessage] = useState(defaultValue)
+
+  const messageShow = (config) => {
+    setMessage(config);
+    setTimeout(() => setMessage(defaultValue), defaultValue.timeout)
+    return config.type
+  };
 
 
   useEffect(() => {
@@ -94,8 +46,9 @@ const App = () => {
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
+      messageShow({ id: "user", message: `Welcome ${user.name}`, type: 'success', timeout: 6000 })
     } catch (error) {
-      console.error("Se ha producido un error", error.response.statusText)
+      messageShow({ id: "user", message: 'Wrong username or password', type: 'error' })
     }
   }
 
@@ -103,6 +56,7 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
     blogService.setToken(null)
+    messageShow({ id: "user", message: 'You have been logged out', type: 'success' })
   }
 
   const createBlog = async (event, title, author, url) => {
@@ -115,8 +69,10 @@ const App = () => {
     try {
       const blog = await blogService.create(newBlog);
       setBlogs(blogs.concat(blog));
+      messageShow({ id: "blog", message: `a new blog ${blog.title} by ${blog.author} has been created`, type: 'success' })
     } catch (error) {
       console.error("Se ha producido un error", error.response.statusText)
+      messageShow({ id: "blog", message: 'Error creating blog', type: 'error' })
     }
   }
 
@@ -124,15 +80,17 @@ const App = () => {
     return (
       <div>
         <h2>log in to application</h2>
-        <LoginForm
-          handleLogin={handleLogin} />
+        <Notification config={message} notificationId="user" />
+        <LoginForm handleLogin={handleLogin} />
       </div>
     )
   }
 
   return (
     <div>
+      <Notification config={message} notificationId="user" />
       <h2>blogs</h2>
+      <Notification config={message} notificationId="blog" />
       <p>{user.name} logged in <button type="button" onClick={handleLogout}>logout</button></p>
       <div>
         <CreateBlogForm createBlog={createBlog} />
