@@ -25,7 +25,7 @@ loginRouter.post("/", async (req, res, next) => {
 			{ id: user._id, username: user.username },
 			config.getSecretToken(),
 		);
-		res.status(200).json({ message: "Login successful", token });
+		res.status(200).json({ name: user.name, token });
 	} catch (error) {
 		next(error);
 	}
