@@ -21,8 +21,7 @@ const App = () => {
 
   const messageShow = (config) => {
     setMessage(config);
-    setTimeout(() => setMessage(defaultValue), defaultValue.timeout)
-    return config.type
+    setTimeout(() => setMessage(defaultValue), config.timeout || defaultValue.timeout)
   };
 
 
@@ -46,7 +45,7 @@ const App = () => {
       window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user))
       blogService.setToken(user.token)
       setUser(user)
-      messageShow({ id: "user", message: `Welcome ${user.name}`, type: 'success', timeout: 6000 })
+      messageShow({ id: "user", message: `Welcome ${user.name}`, type: 'success' })
     } catch (error) {
       messageShow({ id: "user", message: 'Wrong username or password', type: 'error' })
     }

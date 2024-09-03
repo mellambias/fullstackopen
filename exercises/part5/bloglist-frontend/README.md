@@ -85,7 +85,7 @@ Expande tu aplicación para permitir que un usuario que haya iniciado sesión ag
 
 ![navegador mostrando formulario de nuevo blog](images/image-4.png)
 
-#### 5.4: Frontend de la Lista de Blogs, paso 4
+### 5.4: Frontend de la Lista de Blogs, paso 4
 
 Implementa notificaciones que informen al usuario sobre operaciones exitosas y no exitosas en la parte superior de la página. Por ejemplo, cuando se agrega un nuevo blog, se puede mostrar la siguiente notificación:
 
@@ -94,3 +94,119 @@ Un inicio de sesión fallido puede mostrar la siguiente notificación:
 
 ![navegador mostrando notificación de intento de login fallido](images/image-6.png)
 Las notificaciones deben estar visibles durante unos segundos. No es obligatorio agregar colores.
+
+## Ejercicios 5.5.-5.11
+
+### 5.5 Frontend de la Lista de Blogs, paso 5
+
+Cambia el formulario para crear publicaciones de blog para que solo se muestre cuando sea apropiado. Utiliza una funcionalidad similar a la que se mostró anteriormente en [esta parte del material del curso](https://fullstackopen.com/es/part5/props_children_y_proptypes#mostrando-el-formulario-de-inicio-de-sesion-solo-cuando-sea-apropiado). Si lo deseas, puedes utilizar el componente **Togglable** definido en la parte 5.
+
+Por defecto, el formulario no es visible
+
+![navegador mostrando el botón de nueva nota sin mostrar su formulario](images/image-7.png)
+Se expande cuando se hace clic en el botón create new blog
+
+![navegador mostrando formulario con botón create new](images/image-8.png)
+El formulario se esconde otra vez despues de crear un nuevo blog.
+
+### 5.6 Frontend de la Lista de Blogs, paso 6
+
+Separa el formulario para crear un nuevo blog en su propio componente (si aún no lo has hecho) y mueve todos los estados necesarios para crear un nuevo blog a ese componente.
+
+El componente debe funcionar como el componente **NoteForm** del [material de esta parte](https://fullstackopen.com/es/part5/props_children_y_proptypes).
+
+### 5.7 Frontend de la Lista de Blogs, paso 7
+
+Agreguemos un botón a cada blog, que controle si se muestran o no todos los detalles sobre el blog.
+
+Los detalles completos del blog se abren cuando se hace clic en el botón.
+
+![navegador mostrando todos los detalles de un blog mientras otros solo tienen botones para ver más](images/image-9.png)
+Y los detalles se ocultan cuando se vuelve a hacer clic en el botón.
+
+En este punto, el botón `like` no necesita hacer nada.
+
+La aplicación que se muestra en la imagen tiene un poco de CSS adicional para mejorar su apariencia.
+
+Es fácil agregar estilos a la aplicación como se muestra en la parte 2 usando [estilos en línea](https://fullstackopen.com/es/part2/agregar_estilos_a_la_aplicacion_react#estilos-en-linea):
+
+```jsx
+const Blog = ({ blog }) => {
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5
+  }
+
+  return (
+    <div style={blogStyle}>
+      <div>
+        {blog.title} {blog.author}
+      </div>
+      // ...
+  </div>
+)}
+```
+
+>NB: Aunque la funcionalidad implementada en esta parte es casi idéntica a la funcionalidad proporcionada por el componente **Togglable**, no se puede usar directamente para lograr el comportamiento deseado. La solución más fácil sería agregar un estado al componente **blog** que controle si todos los detalles están siendo mostrados o no.
+
+### 5.8: Frontend de la Lista de Blogs, paso 8
+
+Implementa la funcionalidad para el botón **like**. Los likes aumentan al hacer una solicitud `HTTP PUT` a la dirección única de la publicación del blog en el _backend_.
+
+Dado que la operación de _backend_ reemplaza toda la publicación del blog, deberás enviar todos sus campos en el cuerpo de la solicitud. Si deseas agregar un `like` a la siguiente publicación de blog:
+
+```js
+{
+  _id: "5a43fde2cbd20b12a2c34e91",
+  user: {
+    _id: "5a43e6b6c37f3d065eaaa581",
+    username: "mluukkai",
+    name: "Matti Luukkainen"
+  },
+  likes: 0,
+  author: "Joel Spolsky",
+  title: "The Joel Test: 12 Steps to Better Code",
+  url: "<https://www.joelonsoftware.com/2000/08/09/the-joel-test-12-steps-to-better-code/>"
+},
+```
+
+Deberías realizar una solicitud HTTP PUT a la dirección `/api/blogs/5a43fde2cbd20b12a2c34e91` con los siguientes datos de solicitud:
+
+```js
+{
+  user: "5a43e6b6c37f3d065eaaa581",
+  likes: 1,
+  author: "Joel Spolsky",
+  title: "The Joel Test: 12 Steps to Better Code",
+  url: "<https://www.joelonsoftware.com/2000/08/09/the-joel-test-12-steps-to-better-code/>"
+}
+```
+
+El _Backend_ también debe ser actualizado para manejar la referencia al usuario.
+
+### 5.9: Frontend de la lista de Blogs, paso 9
+
+Nos damos cuenta de que algo está mal. Cuando se da _"me gusta"_ a un blog en la app, el nombre del `usuario que añadió el blog` no se muestra en sus detalles:
+
+![navegador mostrando nombre faltante debajo del botón de me gusta](images/image-10.png)
+Cuando se recarga el navegador, la información de la persona se muestra. Esto no es aceptable, averigua dónde está el problema y realiza la corrección necesaria.
+
+Por supuesto, es posible que ya hayas hecho todo correctamente y el problema no ocurra en tu código. En ese caso, puedes continuar.
+
+### 5.10: Frontend de la Lista de Blogs, paso 10
+
+Modifica la aplicación para enumerar las publicaciones de blog por el _número de likes_. La clasificación se puede hacer con el método de _array sort_.
+
+### 5.11: Frontend de la Lista de Blogs, paso 11
+
+Agrega un _nuevo botón para eliminar publicaciones de blog_. También implementa la lógica para eliminar publicaciones de blog en el _backend_.
+
+Tu aplicación podría verse así:
+
+![dialogo de confirmación de eliminación de blog en el navegador](images/image-11.png)
+El cuadro de diálogo de confirmación para eliminar una publicación de blog es fácil de implementar con la función [`window.confirm`](https://developer.mozilla.org/es/docs/Web/API/Window/confirm).
+
+Muestra el botón para eliminar una publicación de blog solo si la publicación de blog fue agregada por el usuario.

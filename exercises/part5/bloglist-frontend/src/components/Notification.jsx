@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 
 const defaultValue = {
   message: null,
@@ -6,6 +5,9 @@ const defaultValue = {
 }
 function Notification({ config, notificationId }) {
   const { message, type } = config || defaultValue;
+  if (message === null || (config.id && notificationId !== config.id)) {
+    return null;
+  }
 
   const typeColor = {
     error: "red",
@@ -25,15 +27,7 @@ function Notification({ config, notificationId }) {
     alignItems: "center",
   };
 
-  console.log("config", config);
-  console.log("notificationId", notificationId);
 
-  if (message === null) {
-    return null;
-  }
-  if (config.id && notificationId !== config.id) {
-    return null;
-  }
   return (
     <div style={style}>
       <p> {message}</p>
