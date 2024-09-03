@@ -18,9 +18,7 @@ const Tooglable = forwardRef((props, refs) => {
     setVisible(!visible);
   };
 
-  useImperativeHandle(refs, () => ({
-    toggleVisibility
-  }))
+  useImperativeHandle(refs, () => ({ toggleVisibility }))
 
   return (
     <div>

@@ -99,7 +99,7 @@ const App = () => {
     }
   }
 
-  const loginForm = () => {
+  function loginForm() {
     const hideWhenVisible = { display: loginVisible ? "none" : "" };
     const showWhenVisible = { display: loginVisible ? "" : "none" };
     return (
@@ -121,11 +121,11 @@ const App = () => {
     );
   }
 
-  const noteForm = () => {
+  const noteForm = () => <div>
     <Tooglable buttonLabel="new note" ref={noteFormRef}>
       <NoteForm createNote={addNote} />
     </Tooglable>
-  }
+  </div>
 
   return (
     <div>
@@ -134,6 +134,7 @@ const App = () => {
 
       {!user && loginForm()}
       {user && noteForm()}
+
 
       <div>
         <button type='button' onClick={() => setShowAll(!showAll)}>

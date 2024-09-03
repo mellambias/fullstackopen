@@ -54,10 +54,10 @@ function tokenExtractor(request, res, next) {
 
 async function userExtractor(request, res, next) {
 	request.user = null;
-	if (!request.token) {
-		throw { name: "JsonWebTokenError", message: "token missing" };
-	}
 	try {
+		if (!request.token) {
+			throw { name: "JsonWebTokenError", message: "token missing" };
+		}
 		const decodedToken = jwt.verify(request.token, config.getSecretToken());
 
 		if (!decodedToken.id) {

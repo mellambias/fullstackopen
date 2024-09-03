@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
 import CreateBlogForm from './components/CreateBlogForm'
 import Notification from './components/Notification'
+import Tooglable from './components/Togglable'
 
 const defaultValue = {
   message: null,
@@ -18,6 +19,7 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(defaultValue)
+  const formCreateBlogRef = useRef()
 
   const messageShow = (config) => {
     setMessage(config);
@@ -34,7 +36,9 @@ const App = () => {
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
-      setUser(JSON.parse(loggedUserJSON))
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      blogService.setToken(user.token)
     }
   }, [])
 
@@ -46,7 +50,7 @@ const App = () => {
       blogService.setToken(user.token)
       setUser(user)
       messageShow({ id: "user", message: `Welcome ${user.name}`, type: 'success' })
-    } catch (error) {
+    } catch (_) {
       messageShow({ id: "user", message: 'Wrong username or password', type: 'error' })
     }
   }
@@ -69,8 +73,9 @@ const App = () => {
       const blog = await blogService.create(newBlog);
       setBlogs(blogs.concat(blog));
       messageShow({ id: "blog", message: `a new blog ${blog.title} by ${blog.author} has been created`, type: 'success' })
+      formCreateBlogRef.current.toggleVisibility()
     } catch (error) {
-      console.error("Se ha producido un error", error.response.statusText)
+      console.error("Se ha producido un error", error.response?.statusText || error)
       messageShow({ id: "blog", message: 'Error creating blog', type: 'error' })
     }
   }
@@ -91,9 +96,9 @@ const App = () => {
       <h2>blogs</h2>
       <Notification config={message} notificationId="blog" />
       <p>{user.name} logged in <button type="button" onClick={handleLogout}>logout</button></p>
-      <div>
+      <Tooglable buttonLabel="new note" ref={formCreateBlogRef}>
         <CreateBlogForm createBlog={createBlog} />
-      </div>
+      </Tooglable >
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
