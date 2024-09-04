@@ -20,6 +20,7 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(defaultValue)
   const formCreateBlogRef = useRef()
+  const [sortByLikes, setSortByLikes] = useState(false)
 
   const messageShow = (config) => {
     setMessage(config);
@@ -99,6 +100,10 @@ const App = () => {
       </div>
     )
   }
+  const displayBlogs = [...blogs];
+  if (sortByLikes) {
+    displayBlogs.sort((a, b) => b.likes - a.likes)
+  }
 
   return (
     <div>
@@ -109,7 +114,9 @@ const App = () => {
       <Tooglable buttonLabel="new note" ref={formCreateBlogRef}>
         <CreateBlogForm createBlog={createBlog} />
       </Tooglable >
-      {blogs.map(blog =>
+      Ordenar: "{sortByLikes ? "true" : "false"}"
+      <button type="button" onClick={() => setSortByLikes(!sortByLikes)}>Ordenar por Likes </button>
+      {displayBlogs.map(blog =>
         <Blog key={blog.id} blog={blog} onLikes={updateBlog} />
       )}
     </div>

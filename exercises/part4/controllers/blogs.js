@@ -66,17 +66,31 @@ blogRouter.delete(
 	},
 );
 
-blogRouter.put("/:id", async (request, response, next) => {
-	try {
-		const updatedBlog = await Blog.findByIdAndUpdate(
-			request.params.id,
-			request.body,
-			{ new: true, runValidators: true, context: "query" },
-		);
-		response.status(200).json(updatedBlog);
-	} catch (error) {
-		next(error);
-	}
-});
+blogRouter.put(
+	"/:id",
+	[middleware.tokenExtractor, middleware.userExtractor],
+	async (request, response, next) => {
+		const user = request.user;
+		try {
+			if (request.body?.user === undefined) {
+				request.body.user = user.id.toString();
+				user.blogs = user.blogs.concat(request.params.id);
+				await user.save();
+			}
+			const updatedBlog = await Blog.findByIdAndUpdate(
+				request.params.id,
+				request.body,
+				{ new: true, runValidators: true, context: "query" },
+			).populate("user", {
+				username: 1,
+				name: 1,
+				id: 1,
+			});
+			response.status(200).json(updatedBlog);
+		} catch (error) {
+			next(error);
+		}
+	},
+);
 
 module.exports = blogRouter;

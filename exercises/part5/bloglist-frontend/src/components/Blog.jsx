@@ -16,8 +16,7 @@ const Blog = ({ blog, onLikes }) => {
     blog.likes++
     try {
       const response = await blogService.update(blog)
-      console.log(response)
-      onLikes(blog)
+      onLikes(response)
     } catch (error) {
       console.error(error)
     }
