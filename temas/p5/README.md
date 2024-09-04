@@ -33,5 +33,6 @@ iniciamos el servidor de la parte 3-4 y el entorno de desarrollo de la parte 5
   - Cuando pida ayuda en el canal de Discorddel curso o en cualquier otro lugar, formularé mis preguntas correctamente, [consulta aquí cómo pedir ayuda](https://fullstackopen.com/es/part0/informacion_general#como-obtener-ayuda-en-discord)
 - Ejercicios 5.5.-5.11.
 - PropTypes
+  El paquete **prop-types** permite definir las `props` que el componente necesita
 - ESlint
 - Ejercicio 5.12

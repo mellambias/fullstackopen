@@ -234,6 +234,9 @@ importers:
       axios:
         specifier: ^1.4.0
         version: 1.7.3
+      prop-types:
+        specifier: 15.8.1
+        version: 15.8.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -339,6 +342,9 @@ importers:
       json-server:
         specifier: 1.0.0-beta.1
         version: 1.0.0-beta.1
+      prop-types:
+        specifier: 15.8.1
+        version: 15.8.1
       react:
         specifier: 18.2.0
         version: 18.2.0
@@ -346,6 +352,9 @@ importers:
         specifier: 18.2.0
         version: 18.2.0(react@18.2.0)
     devDependencies:
+      '@biomejs/biome':
+        specifier: 1.8.3
+        version: 1.8.3
       '@types/react':
         specifier: 18.2.15
         version: 18.2.15

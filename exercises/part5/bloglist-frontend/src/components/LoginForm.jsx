@@ -1,4 +1,9 @@
 import { useState } from "react"
+import PropTypes from "prop-types"
+
+LoginForm.prototypes = {
+  handleLogin: PropTypes.func.isRequired
+}
 function LoginForm({ handleLogin }) {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')

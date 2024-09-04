@@ -13,6 +13,7 @@ function Notification({ config, notificationId }) {
     error: "red",
     success: "green"
   };
+
   const style = {
     backgroundColor: "#E0E0E0",
     color: typeColor[type],

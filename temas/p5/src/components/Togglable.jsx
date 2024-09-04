@@ -1,4 +1,5 @@
 import { useState, forwardRef, useImperativeHandle } from "react";
+import PropTypes from "prop-types";
 
 //https://react.dev/reference/react/forwardRef
 //https://react.dev/reference/react/useImperativeHandle
@@ -38,4 +39,8 @@ const Tooglable = forwardRef((props, refs) => {
     </div>
   );
 })
+
+Tooglable.propTypes = {
+  buttonLabel: PropTypes.string.isRequired,
+}
 export default Tooglable

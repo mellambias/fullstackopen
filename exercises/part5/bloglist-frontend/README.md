@@ -210,3 +210,9 @@ Tu aplicación podría verse así:
 El cuadro de diálogo de confirmación para eliminar una publicación de blog es fácil de implementar con la función [`window.confirm`](https://developer.mozilla.org/es/docs/Web/API/Window/confirm).
 
 Muestra el botón para eliminar una publicación de blog solo si la publicación de blog fue agregada por el usuario.
+
+### 5.12: Frontend de la Lista de Blogs, paso 12
+
+Define **PropTypes** para uno de los componentes de tu aplicación y agrega **ESlint al proyecto**. Define la configuración según tu preferencia. Corrige todos los errores del linter.
+
+Vite ha instalado ESlint en el proyecto por defecto, así que todo lo que queda por hacer es definir tu configuración deseada en el archivo .eslintrc.cjs.
