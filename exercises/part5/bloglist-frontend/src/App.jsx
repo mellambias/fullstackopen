@@ -42,7 +42,7 @@ const App = () => {
     }
   }, [])
 
-  async function handleLogin(event, username, password) {
+  const handleLogin = async (event, username, password) => {
     event.preventDefault()
     try {
       const user = await loginService.login(username, password)
@@ -55,7 +55,7 @@ const App = () => {
     }
   }
 
-  function handleLogout() {
+  const handleLogout = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     setUser(null)
     blogService.setToken(null)
@@ -80,6 +80,16 @@ const App = () => {
     }
   }
 
+  const updateBlog = (updatedBlog) => {
+    const newBlogList = blogs.map(blog => {
+      if (blog.id === updatedBlog.id) {
+        return updatedBlog;
+      }
+      return blog;
+    })
+    setBlogs(newBlogList)
+  }
+
   if (user === null) {
     return (
       <div>
@@ -100,7 +110,7 @@ const App = () => {
         <CreateBlogForm createBlog={createBlog} />
       </Tooglable >
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} onLikes={updateBlog} />
       )}
     </div>
   )

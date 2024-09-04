@@ -13,7 +13,6 @@ const getAll = () => {
 };
 
 async function create(newBlog) {
-	console.log("token", token);
 	const config = {
 		headers: { Authorization: token },
 	};
@@ -25,4 +24,28 @@ async function create(newBlog) {
 	}
 }
 
-export default { getAll, setToken, create };
+async function update(blog) {
+	const config = {
+		headers: { Authorization: token },
+	};
+	try {
+		const blogToUpdate = {
+			user: blog.user.id,
+			likes: blog.likes,
+			author: blog.author,
+			title: blog.title,
+			url: blog.url,
+		};
+		console.log("blog", blog, "update", blogToUpdate);
+
+		const response = await axios.put(
+			`${baseUrl}/${blog.id}`,
+			blogToUpdate,
+			config,
+		);
+		return response.data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+export default { getAll, setToken, create, update };
