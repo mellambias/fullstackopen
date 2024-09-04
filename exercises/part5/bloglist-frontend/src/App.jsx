@@ -91,6 +91,11 @@ const App = () => {
     setBlogs(newBlogList)
   }
 
+  const removeBlog = (removedBlog) => {
+    const newBlogList = blogs.filter((blog) => blog.id !== removedBlog.id)
+    setBlogs(newBlogList)
+  }
+
   if (user === null) {
     return (
       <div>
@@ -117,7 +122,7 @@ const App = () => {
       Ordenar: "{sortByLikes ? "true" : "false"}"
       <button type="button" onClick={() => setSortByLikes(!sortByLikes)}>Ordenar por Likes </button>
       {displayBlogs.map(blog =>
-        <Blog key={blog.id} blog={blog} onLikes={updateBlog} />
+        <Blog key={blog.id} blog={blog} onLikes={updateBlog} onRemove={removeBlog} />
       )}
     </div>
   )

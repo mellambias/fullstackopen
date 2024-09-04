@@ -47,4 +47,20 @@ async function update(blog) {
 		console.error(error);
 	}
 }
-export default { getAll, setToken, create, update };
+
+async function remove(blog) {
+	console.log("blog to remove", blog);
+	const config = {
+		headers: { Authorization: token },
+	};
+	try {
+		const response = await axios.delete(`${baseUrl}/${blog.id}`, config);
+		if (response.status === 204) {
+			return blog;
+		}
+		throw "No se ha podido eliminar";
+	} catch (error) {
+		console.error(error);
+	}
+}
+export default { getAll, setToken, create, update, remove };
