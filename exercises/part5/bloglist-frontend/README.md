@@ -216,3 +216,12 @@ Muestra el botón para eliminar una publicación de blog solo si la publicación
 Define **PropTypes** para uno de los componentes de tu aplicación y agrega **ESlint al proyecto**. Define la configuración según tu preferencia. Corrige todos los errores del linter.
 
 Vite ha instalado ESlint en el proyecto por defecto, así que todo lo que queda por hacer es definir tu configuración deseada en el archivo .eslintrc.cjs.
+
+Podemos usar [Biome](https://biomejs.dev/guides/getting-started/) como herramienta de Analisis, Formateo y linter
+
+```shell
+pnpm add --save-dev --save-exact @biomejs/biome
+pnpm biome init
+pnpm biome migrate eslint --write
+pnpm biome lint ./src 
+```
