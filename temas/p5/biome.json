@@ -74,5 +74,8 @@
 			}
 		},
 		"ignore": ["**/dist", "**/.eslintrc.cjs", "**/node_modules"]
+	},
+	"javascript": {
+		"globals": ["describe", "test", "expect", "vi"]
 	}
 }

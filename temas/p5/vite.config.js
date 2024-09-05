@@ -12,4 +12,9 @@ export default defineConfig({
 			},
 		},
 	},
+	test: {
+		environment: "jsdom",
+		globals: true, // evita tener que importar describe, test y expect en cada fichero de test si usamos biome ver javascript.globals
+		setupFiles: "./testSetup.js",
+	},
 });

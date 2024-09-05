@@ -1,6 +1,6 @@
 # Parte 5
 
-[## Iniciar sesión en la interfaz](https://fullstackopen.com/es/part5/iniciar_sesion_en_la_interfaz)
+## [Iniciar sesión en la interfaz](https://fullstackopen.com/es/part5/iniciar_sesion_en_la_interfaz)
 
 iniciamos el servidor de la parte 3-4 y el entorno de desarrollo de la parte 5
 
@@ -10,7 +10,7 @@ iniciamos el servidor de la parte 3-4 y el entorno de desarrollo de la parte 5
 - Ejercicios 5.1.-5.4.
 - Nota sobre el uso de local storage
 
-[## props.children y proptypes](https://fullstackopen.com/es/part5/props_children_y_proptypes)
+## [props.children y proptypes](https://fullstackopen.com/es/part5/props_children_y_proptypes)
 
 - Mostrando el formulario de inicio de sesión solo cuando sea apropiado
 - Los componentes hijos, también conocidos como **props.children**
@@ -36,3 +36,30 @@ iniciamos el servidor de la parte 3-4 y el entorno de desarrollo de la parte 5
   El paquete **prop-types** permite definir las `props` que el componente necesita
 - ESlint
 - Ejercicio 5.12
+
+## [Probando aplicaciones React](https://fullstackopen.com/es/part5/probando_aplicaciones_react)
+
+Comencemos instalando **Vitest** y la librería **jsdom** que simula un navegador web y algunas librerias que ayudan al renderizado de componentes
+
+```shell
+pnpm add --save-dev vitest jsdom
+pnpm add --save-dev @testing-library/react @testing-library/jest-dom
+```
+
+- Renderizando el componente para pruebas
+- Ubicación del archivo de prueba
+- Búsqueda de contenido en un componente
+- Depurando pruebas
+- Clicando botones en las pruebas
+
+```shell
+pnpm add --save-dev @testing-library/user-event
+```
+
+- Pruebas para el componente Togglable
+- Probando los formularios
+- Sobre la búsqueda de elementos
+- Cobertura de las pruebas
+- Ejercicios 5.13.-5.16.
+- Pruebas de integración del Frontend
+- Pruebas de instantáneas

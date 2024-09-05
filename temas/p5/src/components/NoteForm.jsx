@@ -20,7 +20,9 @@ function NoteForm({ createNote }) {
         <input
           type="text"
           value={newNote}
-          onChange={event => setNewNote(event.target.value)} />
+          onChange={event => setNewNote(event.target.value)}
+          placeholder="write note content here"
+          id="note-input" />
         <button type="submit">save</button>
       </form>
     </div>
