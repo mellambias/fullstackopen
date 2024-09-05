@@ -63,3 +63,18 @@ pnpm add --save-dev @testing-library/user-event
 - Ejercicios 5.13.-5.16.
 - Pruebas de integración del Frontend
 - Pruebas de instantáneas
+
+## [Pruebas de extremo a extremo: Playwright](https://fullstackopen.com/es/part5/pruebas_de_extremo_a_extremo_playwright)
+
+- Playwright
+- Inicializando pruebas
+- Probando nuestro propio código
+- Escribiendo en un formulario
+- Probando el formulario para agregar notas
+- Controlando el estado de la base de datos
+- Prueba de inicio de sesión fallida
+- Ejecutando pruebas una por una
+- Funciones auxiliares para las pruebas
+- Revisión del cambio de importancia de la nota
+- Ejecutando y depurando tus pruebas
+- Ejercicios 5.17.-5.23.
