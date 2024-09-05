@@ -1,13 +1,12 @@
 import { useState } from "react"
-import blogService from '../services/blogs'
 import PropTypes from "prop-types"
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
-  onLikes: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired,
+  handleLikes: PropTypes.func.isRequired,
+  handleRemove: PropTypes.func.isRequired,
 }
-function Blog({ blog, onLikes, onRemove }) {
+function Blog({ blog, handleLikes, handleRemove }) {
   const [showDetail, setShowDetail] = useState(false)
 
   const blogStyle = {
@@ -24,41 +23,18 @@ function Blog({ blog, onLikes, onRemove }) {
     borderRadius: 5
   }
 
-  const handleLikes = async () => {
-    blog.likes++
-    try {
-      const response = await blogService.update(blog)
-      onLikes(response)
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
-  const handleRemove = async () => {
-    // eliminar blog
-    const confirm = window.confirm(`Remove blog ${blog.title} by ${blog.author}`)
-    if (confirm) {
-      try {
-        const response = await blogService.remove(blog)
-        onRemove(response)
-      } catch (error) {
-        console.error(error)
-      }
-    }
-  }
-
   return (
 
     <div style={blogStyle}>
       <div>
-        {blog.title} {blog.author}
+        <span className="cssTitle">{blog.title}</span> <span className="cssAuthor"> {blog.author}</span>
         <button type="button" onClick={() => setShowDetail(!showDetail)}>{showDetail ? "hide" : "view"}</button>
       </div>
       {showDetail && <>
-        {blog.url}<br />
-        likes {blog.likes} <button type="button" onClick={handleLikes}>like</button><br />
-        {blog.user?.name}<br />
-        <button type="button" style={removeButton} onClick={handleRemove}>remove</button>
+        <span className="cssUrl">{blog.url}</span><br />
+        <span className="cssLikes">likes {blog.likes}</span> <button type="button" onClick={() => handleLikes(blog)}>like</button><br />
+        <span className="cssUserName">{blog.user?.name}</span><br />
+        <button type="button" style={removeButton} onClick={() => handleRemove(blog)}>remove</button>
       </>}
     </div>
   )

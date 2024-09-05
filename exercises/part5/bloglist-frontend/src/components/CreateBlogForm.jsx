@@ -4,13 +4,24 @@ function CreateBlogForm({ createBlog }) {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+
+  const addBlog = (event) => {
+    event.preventDefault
+    const newBlog = {
+      title,
+      author,
+      url,
+    };
+    createBlog(newBlog)
+  }
+
   return (
-    <form onSubmit={(event) => createBlog(event, title, author, url)}>
+    <form onSubmit={addBlog}>
       <div>
         title
         <input
           type="text"
-          name="Title"
+          name="title"
           value={title}
           onChange={({ target }) => setTitle(target.value)}
         />
@@ -19,7 +30,7 @@ function CreateBlogForm({ createBlog }) {
         author
         <input
           type="text"
-          name="Author"
+          name="author"
           value={author}
           onChange={({ target }) => setAuthor(target.value)}
         />
@@ -28,7 +39,7 @@ function CreateBlogForm({ createBlog }) {
         url
         <input
           type="text"
-          name="Url"
+          name="url"
           value={url}
           onChange={({ target }) => setUrl(target.value)}
         />

@@ -63,13 +63,8 @@ const App = () => {
     messageShow({ id: "user", message: 'You have been logged out', type: 'success' })
   }
 
-  const createBlog = async (event, title, author, url) => {
-    event.preventDefault()
-    const newBlog = {
-      title,
-      author,
-      url,
-    };
+  const createBlog = async (newBlog) => {
+
     try {
       const blog = await blogService.create(newBlog);
       setBlogs(blogs.concat(blog));
@@ -81,19 +76,35 @@ const App = () => {
     }
   }
 
-  const updateBlog = (updatedBlog) => {
-    const newBlogList = blogs.map(blog => {
-      if (blog.id === updatedBlog.id) {
-        return updatedBlog;
-      }
-      return blog;
-    })
-    setBlogs(newBlogList)
+  const updateBlog = async (updatedBlog) => {
+    updatedBlog.likes++
+    try {
+      const response = await blogService.update(updatedBlog)
+      const newBlogList = blogs.map(blog => {
+        if (blog.id === response.id) {
+          return response;
+        }
+        return blog;
+      })
+      setBlogs(newBlogList)
+    } catch (error) {
+      console.error(error)
+    }
+
   }
 
-  const removeBlog = (removedBlog) => {
-    const newBlogList = blogs.filter((blog) => blog.id !== removedBlog.id)
-    setBlogs(newBlogList)
+  const removeBlog = async (blogToRemove) => {
+    // eliminar blog
+    const confirm = window.confirm(`Remove blog ${blogToRemove.title} by ${blogToRemove.author}`)
+    if (confirm) {
+      try {
+        const response = await blogService.remove(blogToRemove)
+        const newBlogList = blogs.filter((blog) => blog.id !== response.id)
+        setBlogs(newBlogList)
+      } catch (error) {
+        console.error(error)
+      }
+    }
   }
 
   if (user === null) {
@@ -119,10 +130,10 @@ const App = () => {
       <Tooglable buttonLabel="new note" ref={formCreateBlogRef}>
         <CreateBlogForm createBlog={createBlog} />
       </Tooglable >
-      Ordenar: "{sortByLikes ? "true" : "false"}"
-      <button type="button" onClick={() => setSortByLikes(!sortByLikes)}>Ordenar por Likes </button>
+      Ordenar por :
+      <button type="button" onClick={() => setSortByLikes(!sortByLikes)}>{sortByLikes ? "Entrada" : "Likes"}</button>
       {displayBlogs.map(blog =>
-        <Blog key={blog.id} blog={blog} onLikes={updateBlog} onRemove={removeBlog} />
+        <Blog key={blog.id} blog={blog} handleLikes={updateBlog} handleRemove={removeBlog} />
       )}
     </div>
   )
