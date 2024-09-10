@@ -54,6 +54,7 @@ notesRouter.post("/", async (req, res, next) => {
 
 	// localiza al usuario que creará la nota
 	const user = await User.findById(decodedToken.id);
+	console.log("Nota creada", note.content);
 
 	const newNote = new Note({
 		content: note.content,

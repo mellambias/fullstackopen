@@ -9,14 +9,9 @@ const setToken = (newToken) => {
 	token = `Bearer ${newToken}`;
 };
 
-const getAll = () => {
-	const request = axios.get(endpoint);
-	const nonExisting = {
-		id: 1000,
-		content: "This note is not saved on the server",
-		important: true,
-	};
-	return request.then((response) => response.data.concat(nonExisting));
+const getAll = async () => {
+	const notes = await axios.get(endpoint);
+	return notes.data;
 };
 
 const create = async (newNote) => {

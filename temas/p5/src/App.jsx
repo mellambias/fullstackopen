@@ -11,7 +11,6 @@ import NoteForm from './components/NoteForm';
 
 const App = () => {
   const [notes, setNotes] = useState(null)
-  const [newNote, setNewNote] = useState("")
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
   // añadimos los estados para el usuario
@@ -38,39 +37,29 @@ const App = () => {
     }
   }, [])
 
-  const addNote = (noteObject) => {
+  const addNote = async (noteObject) => {
     // Cuando utilizamos _useRef_, la referencia se guarda en `current`
     noteFormRef.current.toggleVisibility()
-    noteService
-      .create(noteObject)
-      .then(newNoteAdded => {
-        setNotes(notes.concat(newNoteAdded))
-      })
+    const newNoteAdded = await noteService.create(noteObject)
+    setNotes((notes) => notes.concat(newNoteAdded))
   }
 
+  const toggleImportanceOf = async (id) => {
+    const note = await notes.find(n => {
+      return n.id === id
+    })
 
-  const handleNoteChange = (event) => {
-    console.log(event.target.value)
-    setNewNote(event.target.value)
-  }
-
-  const changeFilter = () => {
-    setShowAll(!showAll)
-  }
-
-  const toggleImportanceOf = (id) => {
-    const note = notes.find(n => n.id === id)
     const changedNote = { ...note, important: !note.important }
 
     noteService
       .update(id, changedNote)
       .then(noteUpdated => {
-        setNotes(notes.map(note => note.id !== id ? note : noteUpdated))
+        setNotes((notes) => notes.map(note => note.id !== id ? note : noteUpdated))
       })
       .catch(error => {
         setErrorMessage(`Note '${note.content}' was already deleted from server`)
         setTimeout(() => setErrorMessage(null), 5000)
-        setNotes(notes.filter(n => n.id !== id))
+        setNotes((notes) => notes.filter(n => n.id !== id))
       })
   }
 
@@ -81,7 +70,6 @@ const App = () => {
     )
   }
 
-  const notesToShow = showAll ? notes : notes.filter(note => note.important)
 
   // añadimos el controlador para el login
   const handleLogin = async (event) => {
@@ -122,10 +110,13 @@ const App = () => {
   }
 
   const noteForm = () => <div>
+    {user.name} logged in
     <Tooglable buttonLabel="new note" ref={noteFormRef}>
       <NoteForm createNote={addNote} />
     </Tooglable>
   </div>
+
+  const notesToShow = showAll ? notes : notes.filter(note => note.important)
 
   return (
     <div>
@@ -140,9 +131,12 @@ const App = () => {
         <button type='button' onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all'}
         </button>
+        showAll:{showAll}
       </div>
       <ul>
-        {notesToShow.map(note =>
+        {notesToShow.map((
+          note
+        ) =>
           <Note
             key={note.id}
             note={note}

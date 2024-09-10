@@ -9,6 +9,7 @@ const middleware = require("./utils/middleware");
 const notesRouter = require("./controllers/notes");
 const userRouter = require("./controllers/users");
 const loginRouter = require("./controllers/login");
+const testingRouter = require("./controllers/testing");
 
 const url = serverConfig.getMongoURI();
 
@@ -32,6 +33,10 @@ app.use(middleware.requestLogger);
 app.use("/api/notes", notesRouter);
 app.use("/api/users", userRouter);
 app.use("/api/login", loginRouter);
+
+if (process.env.NODE_ENV === "test") {
+	app.use("/api/testing", testingRouter);
+}
 
 // controlador de solicitudes no encontradas
 app.use(middleware.unknownEndpoint);

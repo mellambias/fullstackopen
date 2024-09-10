@@ -6,7 +6,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "cross-env NODE_ENV=production node index.js",
-		"dev": "cross-env NODE_ENV=devolopment nodemon index.js",
+		"dev": "cross-env NODE_ENV=development nodemon index.js",
 		"test": "cross-env NODE_ENV=test node --test",
 		"debug": "cross-env NODE_ENV=debugging nodemon --inspect index.js",
 		"build:ui": "rm -rf dist && pnpm --prefix ../../p2/part2-notes-frontend run build && cp -r dist ../../p3",
@@ -16,7 +16,8 @@
 		"test:notes": "cross-env NODE_ENV=test node --test **/notes_api.test.js ",
 		"test:notes:only": "cross-env NODE_ENV=test node --test --test-only **/notes_api.test.js ",
 		"test:user": "cross-env NODE_ENV=test node --test **/users_api.test.js ",
-		"test:user:only": "cross-env NODE_ENV=test node --test --test-only **/users_api.test.js "
+		"test:user:only": "cross-env NODE_ENV=test node --test --test-only **/users_api.test.js ",
+		"start:test": "cross-env NODE_ENV=test nodemon index.js"
 	},
 	"keywords": ["node"],
 	"author": "Miguel E. Llambias Llansó",

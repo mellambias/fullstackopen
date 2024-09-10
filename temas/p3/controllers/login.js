@@ -25,7 +25,7 @@ loginRouter.post("/", async (req, res) => {
 
 	// Podemos hacer que el token expire
 	const token = jwt.sign(userForToken, config.getJwtSecret(), {
-		expiresIn: 60 * 60,
+		expiresIn: 60 * 60 * 60,
 	});
 
 	res.status(200).send({ token, username: user.username, name: user.name });
