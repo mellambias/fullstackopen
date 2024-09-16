@@ -36,7 +36,7 @@ Ahora exploremos Playwright.
 A diferencia de las pruebas de backend o las pruebas unitarias realizadas en el front-end de React, las pruebas de extremo a extremo no necesitan estar ubicadas en el mismo proyecto npm donde está el código. Hagamos un proyecto completamente separado para las pruebas E2E con el comando npm init. Luego instala Playwright ejecutando en el directorio del nuevo proyecto el comando:
 
 ```shell
-npm init playwright@latest
+pnpm create playwright@latest
 
 ```
 
@@ -1145,7 +1145,61 @@ En lugar de la línea de comandos, Playwright también se puede utilizar a trav�
 Para evitar situaciones problemáticas y aumentar la comprensión, definitivamente vale la pena explorar la [documentación](https://playwright.dev/docs/intro) de alta calidad de Playwright. Las secciones más importantes se enumeran a continuación:
 
 - la sección sobre [locators](https://playwright.dev/docs/locators) ofrece buenos consejos para encontrar elementos en las pruebas
+
+  - Estas funciones devuelven uno o varios localizadores.
+
+    - `page.getByRole(aria-rol,{name})` para ubicarse mediante atributos de accesibilidad explícitos e implícitos.
+    - `page.getByText()` Para ubicar por contenido de texto.
+    - `page.getByLabel()` Para localizar un control de formulario por el texto de la etiqueta asociada.
+    - `page.getByPlaceholder()` Para localizar una entrada del marcador de posición.
+    - `page.getByAltText()` Para localizar un elemento, generalmente imagen, por su texto alternativo `alt` .
+    - `page.getByTitle()` Para localizar un elemento por su atributo de `title`.
+    - `page.getByTestId()` Para localizar un elemento basado en su atributo `data-testid` (se pueden configurar otros atributos).
+
+  - Los filtros permiten seleccionar de entre los `locators` aquel que nos interesa
+
+    - `locator.filter({hasText:texto o regex})` los que coincidan
+    - `locator.filter({hasNotText:texto o regex})` no coincidan
+    - `locator.filter({has:children})` Aquellos que tienen un children, siendo children del tipo locator
+    - `locator.filter({hasNot:children})` Aquellos que no tienen un children, siendo children del tipo locator
+    - Podemos encadenar filtros: `locator.filter().filter()`
+
+  - Operadores
+
+    - Coincidencia dentro de un locator, podemos crear un `locator` y utilizarlo para encontrar otros dentro de él
+    - Encadenar dos `locators`: l1, l2 => l2.locator(l1)
+    - Coincidir con dos locators a la vez. Usamos el método `l1.add(l2)`
+    - Coincida uno u otro. Usamos el método `l1.or(l2)`
+
+  - Listas
+    - Contar el numero de elementos: `await expect(page.getByRole('listitem')).toHaveCount(n)`
+    - Encontrar los textos: `await expect(page.getByRole('listitem')).toHaveText([item_1, ..., item_n])`
+
+  - Iterar sobre los localizadores:
+
+  ```js
+   for(const row of await page.getByRole('listitem').all()){
+    console.log(await row.textContent())
+   }
+    // usando bucles normales
+   const rows = await page.getByRole('listitem')
+   const count = await rows.count()
+   for (let i=0; i<count; ++i){
+    console.log(await rows.nth(i).textContent())
+   }
+  ```
+
+  - Evaluar el contenido
+
+  ```js
+  const rows = await page.getByRole('listitem')
+  const texts = await rows.evaluateAll(
+    list => list.map(element => element.textContent)
+  )
+  ```
+
 - la sección [actions](https://playwright.dev/docs/input) explica cómo es posible simular la interacción con el navegador en las pruebas
+
 - la sección sobre [assertions](https://playwright.dev/docs/test-assertions) demuestra las diferentes aserciones que Playwright ofrece para las pruebas
 
 Puedes encontrar más detalles en la [descripción de la API](https://playwright.dev/docs/api/class-playwright), siendo particularmente útiles:

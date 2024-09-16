@@ -6,4 +6,5 @@ const logger = require("./utils/logger");
 const PORT = config.getServerPort();
 app.listen(PORT, () => {
 	logger.info(`Server Blogs is running on port ${PORT}`);
+	console.log(`Blog Server mode ${process.env.NODE_ENV}`);
 });

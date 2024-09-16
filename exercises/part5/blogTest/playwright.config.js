@@ -11,7 +11,7 @@ const { defineConfig, devices } = require("@playwright/test");
  * @see https://playwright.dev/docs/test-configuration
  */
 module.exports = defineConfig({
-	timeout: 6000,
+	timeout: 3000,
 	testDir: "./tests",
 	/* Run tests in files in parallel */
 	fullyParallel: false,
@@ -26,12 +26,10 @@ module.exports = defineConfig({
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		/* Base URL to use in actions like `await page.goto('/')`. */
-		baseURL: "http://localhost:5173",
+		// baseURL: 'http://127.0.0.1:3000',
 
 		/* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
 		trace: "on-first-retry",
-		/* Llena el contexto con el contenido del fichero. Util para autenticacion */
-		// storageState:'state.json'
 	},
 
 	/* Configure projects for major browsers */
@@ -53,12 +51,12 @@ module.exports = defineConfig({
 
 		/* Test against mobile viewports. */
 		// {
-		// 	name: "Mobile Chrome",
-		// 	use: { ...devices["Pixel 5"] },
+		//   name: 'Mobile Chrome',
+		//   use: { ...devices['Pixel 5'] },
 		// },
 		// {
-		// 	name: "Mobile Safari",
-		// 	use: { ...devices["iPhone 12"] },
+		//   name: 'Mobile Safari',
+		//   use: { ...devices['iPhone 12'] },
 		// },
 
 		/* Test against branded browsers. */
@@ -77,5 +75,5 @@ module.exports = defineConfig({
 	//   command: 'npm run start',
 	//   url: 'http://127.0.0.1:3000',
 	//   reuseExistingServer: !process.env.CI,
-	// }
+	// },
 });

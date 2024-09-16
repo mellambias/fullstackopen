@@ -1,0 +1,22 @@
+{
+	"name": "blogtest",
+	"version": "1.0.0",
+	"description": "Test end to end with playwright",
+	"main": "index.js",
+	"scripts": {
+		"test": "playwright test --project chromium",
+		"test:allBrowser": "playwright test",
+		"test:report": "playwright show-report",
+		"test:ui": "playwright test --ui",
+		"test:debug": "playwright test --project chromium --debug",
+		"test:trace": "playwright test --project chromium --trace on",
+		"test:gen": "playwright codegen http://localhost:5173"
+	},
+	"keywords": [],
+	"author": "mellambias",
+	"license": "ISC",
+	"devDependencies": {
+		"@playwright/test": "1.46.1",
+		"@types/node": "22.5.4"
+	}
+}
